@@ -1,0 +1,23 @@
+FairArea 対応表
+0, A : わたあめ屋(WAT)
+1, B : たこ焼き屋(TA)
+2, C : 射的(SHA)
+3, D : 焼きそば屋(YA)
+4, E : 海鮮焼き屋(KAI)
+5, F : 輪投げ(WAN)
+6, G : ヨーヨー釣り(YO)
+7, H : 金魚すくい(KI)
+8, I : かき氷屋(KAK)
+9, J : リンゴ飴屋(RI)
+10,K : 店前, Upper(FRO_U)
+11,L : 店前, Middle(FRO_M)
+12,M : 店前, Lower(FRO_L)
+
+行動記号 対応表
+0 :others            : その他
+1 :walk              : 歩く
+2 :stop              : 止まる
+3 :turning           : 方向転換
+4 :pick up           : 商品を受け取る
+5 :thinking          : どこへ行こうか悩む
+6 :look around       : あたりを見回す

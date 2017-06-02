@@ -1,0 +1,35 @@
+﻿お祭りの屋台セット
+
+★利用規約
+　Terms of Use
+
+★Read the usage rules below carefully before using this model.
+
+If you do not fully understand the original terms of use written in Japanese, do not edit, redistribute and/or trade this model.
+There are additional conditions in the original text.
+
+This English translation is an summary of terms of use. Refer to the original Japanese text for more details.
+
+-----------------------------------------------------------------------
+
+改造,再配布はご自由にどうぞ。配布する場合も作者に連絡する必要はありません。
+
+商用利用不可です。
+
+その他、他の方に迷惑となるような使い方はしないでください。
+
+このデータを使用して問題が発生しても、作者は一切の責任を負いません。
+
+------------------------------------------------------------------------
+----------------------------------------------------------------------
+
+更新履歴
+H２６．１０．２９配布開始
+H２８．７．１０　水面エフェクト読み込みできないエラーを修正。
+
+------------------------------------------------------------------------
+製作　がけっぷち
+メール　gake-nico@myad.jp
+twitter  https://twitter.com/gake_nico
+　
+------------------------------------------------------------------------

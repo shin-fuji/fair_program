@@ -1,0 +1,200 @@
+fileFormatVersion: 2
+guid: 34d74c5244e5f344298486cd38027354
+timeCreated: 1482907475
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Camera
+    100002: Lamp
+    100004: //RootNode
+    100006: "\u3044\u3059"
+    100008: "\u3044\u3059 1"
+    100010: "\u3044\u3059 2"
+    100012: "\u3044\u3059_end"
+    100014: "\u3044\u3059_end 1"
+    100016: "\u3044\u3059_end 2"
+    100018: "\u3044\u3059\uFF11"
+    100020: "\u3044\u3059\uFF11 1"
+    100022: "\u3044\u3059\uFF11_end"
+    100024: "\u3044\u3059\uFF11_end 1"
+    100026: "\u3044\u3059\uFF12"
+    100028: "\u3044\u3059\uFF12 1"
+    100030: "\u3044\u3059\uFF12 2"
+    100032: "\u3044\u3059\uFF12 3"
+    100034: "\u3044\u3059\uFF12 4"
+    100036: "\u3044\u3059\uFF12_end"
+    100038: "\u3044\u3059\uFF12_end 1"
+    100040: "\u3044\u3059\uFF12_end 2"
+    100042: "\u3044\u3059\uFF12_end 3"
+    100044: "\u3044\u3059\uFF12_end 4"
+    100046: "\u304B\u304D\u6C37\u5C4B"
+    100048: "\u304B\u304D\u6C37\u5C4B_arm"
+    100050: "\u304B\u304D\u6C37\u6A5F"
+    100052: "\u308F\u305F\u3042\u3081\u5C4B"
+    100054: "\u308F\u305F\u3042\u3081\u5C4B_arm"
+    100056: "\u30B7\u30ED\u30C3\u30D7"
+    100058: "\u30BB\u30F3\u30BF\u30FC"
+    100060: "\u30BB\u30F3\u30BF\u30FC 1"
+    100062: "\u30BB\u30F3\u30BF\u30FC 2"
+    100064: "\u30BB\u30F3\u30BF\u30FC 3"
+    100066: "\u30BB\u30F3\u30BF\u30FC 4"
+    100068: "\u30BB\u30F3\u30BF\u30FC_end"
+    100070: "\u30BB\u30F3\u30BF\u30FC_end 1"
+    100072: "\u30BB\u30F3\u30BF\u30FC_end 2"
+    100074: "\u30BB\u30F3\u30BF\u30FC_end 3"
+    100076: "\u30BB\u30F3\u30BF\u30FC_end 4"
+    100078: "\u30C1\u30E7\u30B3\u30D0\u30CA\u30CA\u5C4B"
+    100080: "\u30C1\u30E7\u30B3\u30D0\u30CA\u30CA\u5C4B_arm"
+    100082: "\u30CF\u30F3\u30C9\u30EB"
+    100084: "\u30E8\u30FC\u30E8\u30FC\u91E3\u308A\u5C4B"
+    100086: "\u30E8\u30FC\u30E8\u30FC\u91E3\u308A\u5C4B_arm"
+    100088: "\u5168\u3066\u306E\u89AA"
+    100090: "\u5168\u3066\u306E\u89AA 1"
+    100092: "\u5168\u3066\u306E\u89AA 2"
+    100094: "\u5168\u3066\u306E\u89AA 3"
+    100096: "\u5168\u3066\u306E\u89AA 4"
+    100098: "\u53D6\u3063\u624B"
+    100100: "\u53D6\u3063\u624B_end"
+    100102: "\u5C04\u7684\u5C4B"
+    100104: "\u5C04\u7684\u5C4B_arm"
+    100106: "\u5C04\u7684\u5C4B_mesh"
+    100108: "\u6C34\u69FD"
+    100110: "\u6C34\u9762"
+    100112: "\u6C34\u9762_end"
+    100114: "\u6C37"
+    100116: "\u6C37_end"
+    100118: "\u7D19"
+    100120: "\u7D19_end"
+    100122: "\u7DBF\u3042\u3081\u6A5F"
+    100124: "\u7DBF\u3042\u3081\u6A5F_end"
+    400000: Camera
+    400002: Lamp
+    400004: //RootNode
+    400006: "\u3044\u3059"
+    400008: "\u3044\u3059 1"
+    400010: "\u3044\u3059 2"
+    400012: "\u3044\u3059_end"
+    400014: "\u3044\u3059_end 1"
+    400016: "\u3044\u3059_end 2"
+    400018: "\u3044\u3059\uFF11"
+    400020: "\u3044\u3059\uFF11 1"
+    400022: "\u3044\u3059\uFF11_end"
+    400024: "\u3044\u3059\uFF11_end 1"
+    400026: "\u3044\u3059\uFF12"
+    400028: "\u3044\u3059\uFF12 1"
+    400030: "\u3044\u3059\uFF12 2"
+    400032: "\u3044\u3059\uFF12 3"
+    400034: "\u3044\u3059\uFF12 4"
+    400036: "\u3044\u3059\uFF12_end"
+    400038: "\u3044\u3059\uFF12_end 1"
+    400040: "\u3044\u3059\uFF12_end 2"
+    400042: "\u3044\u3059\uFF12_end 3"
+    400044: "\u3044\u3059\uFF12_end 4"
+    400046: "\u304B\u304D\u6C37\u5C4B"
+    400048: "\u304B\u304D\u6C37\u5C4B_arm"
+    400050: "\u304B\u304D\u6C37\u6A5F"
+    400052: "\u308F\u305F\u3042\u3081\u5C4B"
+    400054: "\u308F\u305F\u3042\u3081\u5C4B_arm"
+    400056: "\u30B7\u30ED\u30C3\u30D7"
+    400058: "\u30BB\u30F3\u30BF\u30FC"
+    400060: "\u30BB\u30F3\u30BF\u30FC 1"
+    400062: "\u30BB\u30F3\u30BF\u30FC 2"
+    400064: "\u30BB\u30F3\u30BF\u30FC 3"
+    400066: "\u30BB\u30F3\u30BF\u30FC 4"
+    400068: "\u30BB\u30F3\u30BF\u30FC_end"
+    400070: "\u30BB\u30F3\u30BF\u30FC_end 1"
+    400072: "\u30BB\u30F3\u30BF\u30FC_end 2"
+    400074: "\u30BB\u30F3\u30BF\u30FC_end 3"
+    400076: "\u30BB\u30F3\u30BF\u30FC_end 4"
+    400078: "\u30C1\u30E7\u30B3\u30D0\u30CA\u30CA\u5C4B"
+    400080: "\u30C1\u30E7\u30B3\u30D0\u30CA\u30CA\u5C4B_arm"
+    400082: "\u30CF\u30F3\u30C9\u30EB"
+    400084: "\u30E8\u30FC\u30E8\u30FC\u91E3\u308A\u5C4B"
+    400086: "\u30E8\u30FC\u30E8\u30FC\u91E3\u308A\u5C4B_arm"
+    400088: "\u5168\u3066\u306E\u89AA"
+    400090: "\u5168\u3066\u306E\u89AA 1"
+    400092: "\u5168\u3066\u306E\u89AA 2"
+    400094: "\u5168\u3066\u306E\u89AA 3"
+    400096: "\u5168\u3066\u306E\u89AA 4"
+    400098: "\u53D6\u3063\u624B"
+    400100: "\u53D6\u3063\u624B_end"
+    400102: "\u5C04\u7684\u5C4B"
+    400104: "\u5C04\u7684\u5C4B_arm"
+    400106: "\u5C04\u7684\u5C4B_mesh"
+    400108: "\u6C34\u69FD"
+    400110: "\u6C34\u9762"
+    400112: "\u6C34\u9762_end"
+    400114: "\u6C37"
+    400116: "\u6C37_end"
+    400118: "\u7D19"
+    400120: "\u7D19_end"
+    400122: "\u7DBF\u3042\u3081\u6A5F"
+    400124: "\u7DBF\u3042\u3081\u6A5F_end"
+    4300000: "\u5C04\u7684\u5C4B_mesh"
+    9500000: //RootNode
+    13700000: "\u5C04\u7684\u5C4B_mesh"
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
