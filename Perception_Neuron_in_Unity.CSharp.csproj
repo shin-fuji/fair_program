@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3C4E4D4C-327D-BA20-C946-F166031689E0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
+    <UnityVersion>5.4.1f1</UnityVersion>
+    <RootNamespace></RootNamespace>
+    <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Debug\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_4_1;UNITY_5_4;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_EDITOR_RETINA;ENABLE_RETINA_GUISTYLES;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_VSTU;CROSS_PLATFORM_INPUT</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Release\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_4_1;UNITY_5_4;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_EDITOR_RETINA;ENABLE_RETINA_GUISTYLES;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_VSTU;CROSS_PLATFORM_INPUT</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="Boo.Lang" />
+    <Reference Include="UnityScript.Lang" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="GETween">
+      <HintPath>Assets\GUI Animator\Common\Plugins\GETween.dll</HintPath>
+    </Reference>
+    <Reference Include="GUIAnimatorFREE">
+      <HintPath>Assets\GUI Animator\GUI Animator FREE\Plugins\GUIAnimatorFREE.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Perception_Neuron_in_Unity.CSharp.Plugins.csproj">
+      <Project>{434F6838-BF00-1FC0-599D-0C593D96ED36}</Project>
+      <Name>Perception_Neuron_in_Unity.CSharp.Plugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Animation\Crafting Mecanim Animation Pack FREE\Code\CrafterControllerFREE.cs" />
+    <Compile Include="Assets\Animation\Crafting Mecanim Animation Pack FREE\Code\IKHands.cs" />
+    <Compile Include="Assets\Animation\Crafting Mecanim Animation Pack FREE\Code\SmoothFollow.cs" />
+    <Compile Include="Assets\Animation\MoveMotionPack\SampleScene\Scripts\PlayManager.cs" />
+    <Compile Include="Assets\BehaviorScriptReader_jikkenn2.cs" />
+    <Compile Include="Assets\Camera_test_script.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Orbit Camera\Scripts\GE_OrbitCamera.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Orbit Camera\Scripts\GE_OrbitCameraUI.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Toggle Full Screen\Scripts\GE_ToggleFullScreenUI.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\Characters\FirstPersonCharacter\Scripts\FirstPersonController.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\Characters\FirstPersonCharacter\Scripts\HeadBob.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\Characters\FirstPersonCharacter\Scripts\MouseLook.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\Characters\FirstPersonCharacter\Scripts\RigidbodyFirstPersonController.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\ButtonHandler.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\CameraSwitch.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\InputAxisScrollbar.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\Joystick.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\LevelReset.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\MobileControlRig.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\PlatformSpecific\MobileInput.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\PlatformSpecific\StandaloneInput.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\TiltInput.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\TouchPad.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\CrossPlatformInput\Scripts\VirtualInput.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\Utility\CameraRefocus.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\Utility\CurveControlledBob.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\Utility\FOVKick.cs" />
+    <Compile Include="Assets\GE Common Assets\GE Touch Joystick\Utility\LerpControlledBob.cs" />
+    <Compile Include="Assets\GE Common Assets\Scripts\GE_UIResponder.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo00.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo01.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo02.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo03.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo04.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo05.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo06.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo07.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_Demo08.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_DemoPlaySound.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_OpenOtherScene.cs" />
+    <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo Basic (CSharp)\Scripts\GUIAnimatorFREEDemo.cs" />
+    <Compile Include="Assets\Materials\Fantasy Skybox FREE\Demo\Scripts\GE_FantasySkyboxFREE_Demo.cs" />
+    <Compile Include="Assets\Materials\Fantasy Skybox FREE\Demo\Scripts\GE_FantasySkyboxFREE_UIs.cs" />
+    <Compile Include="Assets\NavMeshofCustomer_FairJikkenn2.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Mocap\NeuronActor.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Mocap\NeuronAnimatorInstance.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Mocap\NeuronAnimatorPhysicalReference.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Mocap\NeuronConnection.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Mocap\NeuronDataReader.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Mocap\NeuronHelper.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Mocap\NeuronInstance.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Mocap\NeuronInstancesManager.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Mocap\NeuronSource.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Mocap\NeuronTransformsInstance.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Mocap\NeuronTransformsPhysicalReference.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Utilities\BoneColliders.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Utilities\BoneLine.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Utilities\BoneLines.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Utilities\BoneRigidbodies.cs" />
+    <Compile Include="Assets\Neuron\Scripts\Utilities\FPSCounter.cs" />
+    <Compile Include="Assets\NeuronDebug\Scripts\CameraController.cs" />
+    <Compile Include="Assets\NeuronDebug\Scripts\DebugInfo.cs" />
+    <Compile Include="Assets\NeuronDebug\Scripts\DebugLogRedirector.cs" />
+    <Compile Include="Assets\NeuronDebug\Scripts\DebugMenu.cs" />
+    <Compile Include="Assets\NeuronDebug\Scripts\GridFollowActor.cs" />
+    <Compile Include="Assets\NeuronExamples\OVRExample\NeuronOVRAdapter.cs" />
+    <Compile Include="Assets\NeuronExamples\ShutterKeyBindings\ShutterKeyBindingExample.cs" />
+    <Compile Include="Assets\NeuronExamples\SimpleDataStreamReading\CustomAnimatorDriver.cs" />
+    <Compile Include="Assets\ReadBehavFileToggleScript.cs" />
+    <Compile Include="Assets\RobotBehaviourScript_FairJikkenn2.cs" />
+    <Compile Include="Assets\Scripts\ButtonBehavSaveScript.cs" />
+    <Compile Include="Assets\Scripts\ButtonResumeScript.cs" />
+    <Compile Include="Assets\Scripts\ConnectToNeuronRobot.cs" />
+    <Compile Include="Assets\Scripts\CustomerScripts\BehaviourScriptReader.cs" />
+    <Compile Include="Assets\Scripts\CustomerScripts\CustomerCreator.cs" />
+    <Compile Include="Assets\Scripts\CustomerScripts\NavMeshofCustomer_FairVer.cs" />
+    <Compile Include="Assets\Scripts\CustomerScripts\Navmesh.cs" />
+    <Compile Include="Assets\Scripts\CustomerScripts\PlayerBehaviourText_FairVer.cs" />
+    <Compile Include="Assets\Scripts\CustomerScripts\PlayerControllerBehaviour.cs" />
+    <Compile Include="Assets\Scripts\CustomerScripts\RobotBehaviourScript_FairVer.cs" />
+    <Compile Include="Assets\Scripts\CustomerScripts\WalkerCreator.cs" />
+    <Compile Include="Assets\Scripts\InterSecCollider.cs" />
+    <Compile Include="Assets\Scripts\JoyStick.cs" />
+    <Compile Include="Assets\Scripts\JoyStickEditor.cs" />
+    <Compile Include="Assets\Scripts\LocationScripts\Location_Hips.cs" />
+    <Compile Include="Assets\Scripts\LocationScripts\Location_LForeArm.cs" />
+    <Compile Include="Assets\Scripts\LocationScripts\Location_LHand.cs" />
+    <Compile Include="Assets\Scripts\LocationScripts\Location_LLeg.cs" />
+    <Compile Include="Assets\Scripts\LocationScripts\Location_LUpLeg.cs" />
+    <Compile Include="Assets\Scripts\LocationScripts\Location_Legs.cs" />
+    <Compile Include="Assets\Scripts\LocationScripts\Location_RForeArm.cs" />
+    <Compile Include="Assets\Scripts\LocationScripts\Location_RHand.cs" />
+    <Compile Include="Assets\Scripts\LocationScripts\Location_RLeg.cs" />
+    <Compile Include="Assets\Scripts\LocationScripts\Location_RUpLeg.cs" />
+    <Compile Include="Assets\Scripts\LocationScripts\Location_Spines.cs" />
+    <Compile Include="Assets\Scripts\MyRenderSettings.cs" />
+    <Compile Include="Assets\Scripts\Pausable.cs" />
+    <Compile Include="Assets\Scripts\PickUpOrNotScript.cs" />
+    <Compile Include="Assets\Scripts\PlayerBehavior.cs" />
+    <Compile Include="Assets\Scripts\PlayerDemoMove.cs" />
+    <Compile Include="Assets\Scripts\PurchaseBehavior.cs" />
+    <Compile Include="Assets\Scripts\SubCameraController.cs" />
+    <Compile Include="Assets\Scripts\ThrowOrNotScript.cs" />
+    <Compile Include="Assets\Scripts\Title\ButtonChangeAdr.cs" />
+    <Compile Include="Assets\Scripts\Title\ButtonResumeOfConfigSprict.cs" />
+    <Compile Include="Assets\Scripts\Title\Config.cs" />
+    <Compile Include="Assets\Scripts\Title\InputAdrManager.cs" />
+    <Compile Include="Assets\Scripts\Title\TitleManager.cs" />
+    <Compile Include="Assets\Scripts\WalkOrNotScript.cs" />
+    <Compile Include="Assets\Scripts\fowardTest.cs" />
+    <Compile Include="Assets\Scripts\foward_test2.cs" />
+    <Compile Include="Assets\SubCameraControllerJikkenn2.cs" />
+    <Compile Include="Assets\WalkerCreator_jikkenn2.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Animation\MoveMotionPack\SampleScene\Shaders\DiffuseReflectiveShader.shader" />
+    <None Include="Assets\Animation\MoveMotionPack\SampleScene\Shaders\ReflectiveDiffuseSpec.shader" />
+    <None Include="Assets\Animation\MoveMotionPack\SampleScene\Shaders\ReflectiveDiffuseSpecTransp.shader" />
+    <None Include="Assets\Fair\Materials\read me.txt" />
+    <None Include="Assets\GE Common Assets\Readme.txt" />
+    <None Include="Assets\GUI Animator\GUI Animator FREE\!How to.txt" />
+    <None Include="Assets\GUI Animator\GUI Animator FREE\Readme.txt" />
+    <None Include="Assets\HerdBehav_1.txt" />
+    <None Include="Assets\HerdBehav_2.txt" />
+    <None Include="Assets\Materials\Fantasy Skybox FREE\Fog and Ambient reference.txt" />
+    <None Include="Assets\Materials\Fantasy Skybox FREE\Readme.txt" />
+    <None Include="Assets\Materials\Textures\read me.txt" />
+    <None Include="Assets\Neuron\Resources\Shaders\BoneLineShader.shader" />
+    <None Include="Assets\NeuronDebug\Prefabs\Fonts\LICENSE.txt" />
+    <None Include="Assets\NoHerdBehav_1.txt" />
+    <None Include="Assets\NoHerdBehav_2.txt" />
+    <None Include="Assets\OtherTxt\FairArea_対応表.txt" />
+    <None Include="Assets\OtherTxt\MarketArea_対応表.txt" />
+    <None Include="Assets\OtherTxt\研究におけるメモ.txt" />
+    <None Include="Assets\OtherTxt\適当メモ.txt" />
+    <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
+    <None Include="Assets\behavior_array.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
+</Project>
