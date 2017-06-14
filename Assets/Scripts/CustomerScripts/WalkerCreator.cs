@@ -48,18 +48,17 @@ public class WalkerCreator : MonoBehaviour {
             timer = 0;
 
             randNum = Random.Range(0f, 1f);
-            randPos = Random.Range(-4f, 1f);
 
             // Customerを生成
             GameObject walker = Instantiate(originalWalker);
 
             // 実験2で必要になる
-            if(i != camJikkenn2) walker.transform.FindChild("Camera").GetComponent<Camera>().enabled = false;
+            //if(i != camJikkenn2) walker.transform.FindChild("Camera").GetComponent<Camera>().enabled = false;
 
             // 同じオブジェクト(CustomerCreator)のスクリプトを参照
             BehaviourScriptReader b = GetComponent<BehaviourScriptReader>();
             // 生成した Customer のオブジェクトのスクリプトを参照
-            NavMeshofCustomer_FairVer n = walker.GetComponent<NavMeshofCustomer_FairVer>();
+            NavMeshofCustomer_Fair2Ver n = walker.GetComponent<NavMeshofCustomer_Fair2Ver>();
 
 
             // 行動記号列ファイルの行数分だけ、walker には behavLineList の要素を渡す
@@ -77,7 +76,9 @@ public class WalkerCreator : MonoBehaviour {
 
             walkerList.Add(walker);
 
-            // 場所や移動方向を設定
+            // 出現する場所を設定
+            // Fair_Ver
+            /*
             if (randNum < 0.5f)
             {
                 walker.transform.position = new Vector3(randPos, 0, -20f);
@@ -87,6 +88,24 @@ public class WalkerCreator : MonoBehaviour {
                 walker.transform.position = new Vector3(randPos, 0, 20f);
                 walker.transform.eulerAngles = new Vector3(0, 180f, 0);
             }
+            */
+
+            // Fair2_Ver
+            if (randNum < 0.5f)
+            {
+                // 右側出口から出現
+                randPos = Random.Range(5f, 8f);
+                walker.transform.position = new Vector3(randPos, 0, 18f);
+                walker.transform.eulerAngles = new Vector3(0, 90f, 0);
+            }
+            else
+            {
+                // 下側出口から出現
+                randPos = Random.Range(-1f, 1f);
+                walker.transform.position = new Vector3(-24f, 0, randPos);
+                walker.transform.eulerAngles = new Vector3(0, 180f, 0);
+            }
+
 
             i++;
 

@@ -33,7 +33,8 @@ public class TitleManager : MonoBehaviour {
 
         // フェードアウトで切り替えるとうまくいかないので、
         // ここで直接シーン遷移を行う
-        SceneManager.LoadScene("Fair");
+        //SceneManager.LoadScene("Fair");
+        SceneManager.LoadScene("Fair_2");
     }
 
     // Configボタンを押したとき

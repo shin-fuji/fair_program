@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// 店に客(Customer)を入店させるプログラム
-/// 店の玄関で客を生成する
+/// 縁日舞台にCustomerを登場させるプログラム
 /// </summary>
 public class CustomerCreator : MonoBehaviour
 {
@@ -17,7 +16,7 @@ public class CustomerCreator : MonoBehaviour
     int i = 0;
 
 
-    // 客の入店間隔
+    // 客を登場させる時間間隔
     float timer = 0;
 
     // Use this for initialization
@@ -32,7 +31,7 @@ public class CustomerCreator : MonoBehaviour
 
 
         timer += Time.deltaTime;
-        // 客の人数が customerNum 人以下のとき、5秒経過で一人入店
+        // 客の人数が customerNum 人以下のとき、5秒経過で一人登場
         // (構造上、条件節は '<')
         if (customerList.Count < customerNum && timer >= 5)
         {
@@ -44,7 +43,7 @@ public class CustomerCreator : MonoBehaviour
             // 同じオブジェクト(CustomerCreator)のスクリプトを参照
             BehaviourScriptReader b = GetComponent<BehaviourScriptReader>();
             // 生成した Customer のオブジェクトのスクリプトを参照
-            NavMeshofCustomer_FairVer n = customer.GetComponent<NavMeshofCustomer_FairVer>();
+            NavMeshofCustomer_Fair2Ver n = customer.GetComponent<NavMeshofCustomer_Fair2Ver>();
 
 
             // 行動記号列ファイルの行数分だけ、Customer には behavLineList の要素を渡す
