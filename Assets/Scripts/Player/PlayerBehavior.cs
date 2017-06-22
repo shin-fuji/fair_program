@@ -1,13 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBehavior : MonoBehaviour {
-
-
-    //SerialozeField：インスペクターから初期値を変更できるようにする。
-    //[SerializeField]
-    //private float Speed;
-    
+public class PlayerBehavior : MonoBehaviour
+{
     // PlayerのHipの情報を取得
     GameObject playerHip;
     // ImmersiveCamの情報を取得

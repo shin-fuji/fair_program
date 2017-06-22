@@ -55,7 +55,7 @@ public class WalkerCreator : MonoBehaviour {
             // 実験2で必要になる
             //if(i != camJikkenn2) walker.transform.FindChild("Camera").GetComponent<Camera>().enabled = false;
 
-            // 同じオブジェクト(CustomerCreator)のスクリプトを参照
+            // 同じオブジェクト(WalkerCreator)のスクリプトを参照
             BehaviourScriptReader b = GetComponent<BehaviourScriptReader>();
             // 生成した Customer のオブジェクトのスクリプトを参照
             NavMeshofCustomer_Fair2Ver n = walker.GetComponent<NavMeshofCustomer_Fair2Ver>();
@@ -93,17 +93,17 @@ public class WalkerCreator : MonoBehaviour {
             // Fair2_Ver
             if (randNum < 0.5f)
             {
-                // 右側出口から出現
+                // 下側出口から出現
                 randPos = Random.Range(5f, 8f);
-                walker.transform.position = new Vector3(randPos, 0, 18f);
-                walker.transform.eulerAngles = new Vector3(0, 90f, 0);
+                walker.transform.position = new Vector3(randPos, 0.1f, 18f);
+                walker.transform.eulerAngles = new Vector3(0, 180f, 0);
             }
             else
             {
-                // 下側出口から出現
+                // 右側出口から出現
                 randPos = Random.Range(-1f, 1f);
-                walker.transform.position = new Vector3(-24f, 0, randPos);
-                walker.transform.eulerAngles = new Vector3(0, 180f, 0);
+                walker.transform.position = new Vector3(-24f, 0.1f, randPos);
+                walker.transform.eulerAngles = new Vector3(0, 90f, 0);
             }
 
 

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ここでPlayerの向いている方向を計算し、ほかのプログラムで使いまわしている
+/// </summary>
 public class fowardTest : MonoBehaviour
 {
     public GameObject player; // GameObject保存用変数、[Inspector]から設定できるように public に

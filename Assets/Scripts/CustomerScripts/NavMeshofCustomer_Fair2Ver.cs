@@ -27,6 +27,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     int pointsIndex = 0;
     int pointsIndexRem;
     int pointsCount;
+    int POINT_NUM = 17;
 
     bool walkerOrNot = false;
 
@@ -77,6 +78,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+
         agent = GetComponent<NavMeshAgent>();
 
         // ファイルを読まずにランダムに歩かせる場合
@@ -89,11 +91,11 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             // 店の前をうろうろする
             {
                 // point の個数だけループを回して SetDestination に登録する
-                for (int i = 0; i < 15; i++)
+                for (int i = 0; i < POINT_NUM; i++)
                 {
                     points.Add(GameObject.Find("SecSphere").transform.FindChild("point" + i));
                 }
-                agent.SetDestination(points[(int)Mathf.Round(randNum * 12)].position);
+                agent.SetDestination(points[(int)Mathf.Round(randNum * POINT_NUM)].position);
             }
             else
             // ただの歩行者
@@ -115,7 +117,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
             // エリア記号をcustomerの歩行ルートにセットする
             FromAreaSymbolsToPoints(areaSymbols);
-            //Debug.Log("points[] num = " + pointsCount);
+            Debug.Log("points[] num = " + pointsCount);
             agent.SetDestination(points[0].position);
 
 
@@ -437,6 +439,10 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
     void SetAnim()
     {
+        if (agent.pathStatus != NavMeshPathStatus.PathInvalid)
+        {
+            return;
+        }
 
         // playerの速度に応じてanimパラメータを調整
         if (agent.velocity.magnitude >= 0.2f)

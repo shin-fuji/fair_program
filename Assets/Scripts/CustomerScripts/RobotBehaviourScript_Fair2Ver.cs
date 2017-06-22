@@ -78,7 +78,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         {
             clerkPos.Add(GameObject.Find("Clerks").transform.FindChild("Clerk" + i).transform.position);
         }
-
+        
         Debug.Log("ApplyHeadBehaviour is " + ApplyHeadBehaviour);
     }
 
