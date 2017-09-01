@@ -8,11 +8,13 @@ using System.Collections.Generic;
 /// </summary>
 public class NavMeshofCustomer_FairJikkenn2 : MonoBehaviour
 {
-
     private NavMeshAgent agent;
     private List<Transform> points = new List<Transform>();
 
     private Animator anim;
+
+    // Customer の顔のGameObjectを取得
+    GameObject customerHead;
 
     // 行動記号列を読み込むか
     // WalkerCreator.cs から bool 値が渡される
@@ -71,6 +73,17 @@ public class NavMeshofCustomer_FairJikkenn2 : MonoBehaviour
     {
         Debug.Log("Test");
         agent = GetComponent<NavMeshAgent>();
+
+        // Robot_Head を取得
+        customerHead =  transform.FindChild("Robot_References").
+            FindChild("Robot_Reference").
+            FindChild("Robot_Hips").
+            FindChild("Robot_Spine").
+            FindChild("Robot_Spine1").
+            FindChild("Robot_Spine2").
+            FindChild("Robot_Spine3").
+            FindChild("Robot_Neck").
+            FindChild("Robot_Head").gameObject;
 
         // ファイルを読まずにランダムに歩かせる場合
         if (readFileOrNot == false)
@@ -145,8 +158,6 @@ public class NavMeshofCustomer_FairJikkenn2 : MonoBehaviour
         timer += Time.deltaTime;
         timer_col += Time.deltaTime;
 
-
-        Debug.Log("aaaa");
         SetAnim();
 
         if (walkerOrNot == true)

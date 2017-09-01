@@ -27,13 +27,6 @@ public class Config : MonoBehaviour
         configMenu = false;
     }
 
-    // 「Change」ボタンを押すと、変更が適用される
-    public void OnChange()
-    {
-        
-
-    }
-
     public void OnResume()
     {
         OnUnConfig();

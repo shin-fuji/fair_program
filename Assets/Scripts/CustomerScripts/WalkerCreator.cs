@@ -21,9 +21,10 @@ public class WalkerCreator : MonoBehaviour {
 
     int i = 0;
 
-    // 生成する場所を決めるランダム変数
+    // 生成する場所・向きを決めるランダム変数
     float randNum;
-    float randPos;
+    Vector3 randPos;
+    Quaternion randDir;
 
     // 生成する時間間隔
     float timer = 0;
@@ -50,7 +51,23 @@ public class WalkerCreator : MonoBehaviour {
             randNum = Random.Range(0f, 1f);
 
             // Customerを生成
-            GameObject walker = Instantiate(originalWalker);
+
+            // Instantiateする場所を指定(Fair2_Ver)
+            if (randNum < 0.5f)
+            {
+                // 下側出口から出現
+                randPos = new Vector3(Random.Range(5f, 8f), 0.1f, 18f);
+                randDir = Quaternion.Euler(new Vector3(0, 180f, 0));
+            }
+            else
+            {
+                // 右側出口から出現
+                randPos = new Vector3(-24f, 0.1f, Random.Range(-1f, 1f));
+                randDir = Quaternion.Euler(new Vector3(0, 90f, 0));
+            }
+
+            // 位置を指定したうえでInstantiate
+            GameObject walker = Instantiate(originalWalker, randPos, randDir) as GameObject;
 
             // 実験2で必要になる
             //if(i != camJikkenn2) walker.transform.FindChild("Camera").GetComponent<Camera>().enabled = false;
@@ -75,37 +92,6 @@ public class WalkerCreator : MonoBehaviour {
             }
 
             walkerList.Add(walker);
-
-            // 出現する場所を設定
-            // Fair_Ver
-            /*
-            if (randNum < 0.5f)
-            {
-                walker.transform.position = new Vector3(randPos, 0, -20f);
-            }
-            else
-            {
-                walker.transform.position = new Vector3(randPos, 0, 20f);
-                walker.transform.eulerAngles = new Vector3(0, 180f, 0);
-            }
-            */
-
-            // Fair2_Ver
-            if (randNum < 0.5f)
-            {
-                // 下側出口から出現
-                randPos = Random.Range(5f, 8f);
-                walker.transform.position = new Vector3(randPos, 0.1f, 18f);
-                walker.transform.eulerAngles = new Vector3(0, 180f, 0);
-            }
-            else
-            {
-                // 右側出口から出現
-                randPos = Random.Range(-1f, 1f);
-                walker.transform.position = new Vector3(-24f, 0.1f, randPos);
-                walker.transform.eulerAngles = new Vector3(0, 90f, 0);
-            }
-
 
             i++;
 

@@ -1,7 +1,10 @@
-﻿// CameraController.cs
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Immersiveディスプレイ and ドーム型ディスプレイ用のカメラのためのスクリプト
+/// 角度を固定しながら、Playerの周囲を画面に映し出せるように設定
+/// </summary>
 public class SubCameraController : MonoBehaviour
 {
     public GameObject player; // GameObject保存用変数、[Inspector]から設定できるように public に

@@ -47,7 +47,7 @@ public class ButtonBehavSaveScript : MonoBehaviour
     }
 
     
-    // テキストファイルとしてセーブ
+    // テキストファイルとして行動記号列をセーブ
     public void SaveBehav(List<string> playerBehavList)
     {
         // ファイル保存用

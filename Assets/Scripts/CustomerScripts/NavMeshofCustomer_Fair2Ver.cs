@@ -30,6 +30,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     int POINT_NUM = 17;
 
     bool walkerOrNot = false;
+    
 
     /// <summary>
     /// 客が現在どこにいるかなどを示す定数
@@ -58,6 +59,9 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         FAN_1 = 10, FAN_2 = 11, 
         COR = 12, STA_F = 13, STA_S = 14,
         RI_EXIT = 15, LO_EXIT = 16;
+    // Inspector上で自身とぶつかったエリアのタグを表示
+    [SerializeField]
+    new string tag;
 
     // 特定の行動を、1エリアで何回も繰り返し行わないようにするための変数
     bool doSpecificBehavior = false;
@@ -80,6 +84,8 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     {
 
         agent = GetComponent<NavMeshAgent>();
+
+
 
         // ファイルを読まずにランダムに歩かせる場合
         if (readFileOrNot == false)
@@ -137,6 +143,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
 
         anim = GetComponent<Animator>();
+        anim.SetFloat("Speed", 1.0f);
     }
 
     // Update is called once per frame
@@ -370,7 +377,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     /// <param name="collider"></param>
     void OnTriggerEnter(Collider collider)
     {
-        string tag = collider.tag;
+        tag = collider.tag;
 
         // timer_col を初期化
         timer_col = 0;
@@ -423,6 +430,15 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 mode = STA_S;
                 break;
             case "Sec_COR":
+                // もしただの歩行者で左方向に歩いていれば、CORで下方向に転回して出口へ
+                // そうでなければ右方向に転回して出口へ
+                if (walkerOrNot)
+                {
+                    if(Vector3.Angle(transform.forward, new Vector3(1,0,0)) < 45)
+                        agent.SetDestination(GameObject.Find("SecSphere").transform.FindChild("point" + LO_EXIT).position);
+                    else
+                        agent.SetDestination(GameObject.Find("SecSphere").transform.FindChild("point" + RI_EXIT).position);
+                }
                 mode = COR;
                 break;
             // 道路の端まで来てしまえば、その歩行者を消す

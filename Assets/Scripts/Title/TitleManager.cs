@@ -51,12 +51,13 @@ public class TitleManager : MonoBehaviour {
 		Black.color = new Color(0, 0, 0, value);
 		if(value >= 1)
 		{
-			//各ゲームでシーン遷移
-			//Debug.Log("シーン遷移");
+            //各ゲームでシーン遷移
+            //Debug.Log("シーン遷移");
             //SceneManager.LoadScene("Fair");
+            //SceneManager.LoadScene("Fair_2");
             // 旧形式なので使えない
             //Application.LoadLevel("main");
-		}
-	}
+        }
+    }
 }
 

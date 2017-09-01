@@ -41,11 +41,11 @@ public class PlayerBehavior : MonoBehaviour
         //// プレイヤーの角度を矢印キーで調整する
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.Rotate(transform.up, -0.5f);
+            transform.Rotate(transform.up, -1.5f);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            transform.Rotate(transform.up, 0.5f);
+            transform.Rotate(transform.up, 1.5f);
         }
 
 

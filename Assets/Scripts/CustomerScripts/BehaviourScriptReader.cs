@@ -13,7 +13,7 @@ public class BehaviourScriptReader : MonoBehaviour
     char[] SPLIT = { '\n' };
 
     // 行動記号列を読み込むか
-    public static bool readFileOrNot = true;
+    public static bool readFileOrNot = false;
 
     // 一番最初に呼び出される
     void Awake()

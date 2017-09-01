@@ -9,7 +9,7 @@ public class PlayerDemoMove : MonoBehaviour
     private JoyStick _joystick = null;
 
     //移動速度
-    private const float SPEED = 0.05f;
+    private const float SPEED = 0.15f;
 
     private void Update()
     {

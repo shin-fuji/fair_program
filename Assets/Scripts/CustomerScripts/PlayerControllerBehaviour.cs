@@ -7,8 +7,6 @@ using System.Collections;
 public class PlayerControllerBehaviour : MonoBehaviour
 {
 
-    Animator animator;
-
     public bool walkOrNot = false;
     public bool pickUpOrNot = false;
 
@@ -37,9 +35,6 @@ public class PlayerControllerBehaviour : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
-        // アニメーターを取得
-        animator = GetComponent<Animator>();
 
         // 位置・角度情報を初期化
         lastPosition = Location_Hips.location_of_Hips;
