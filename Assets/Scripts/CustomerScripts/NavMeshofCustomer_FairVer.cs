@@ -9,7 +9,7 @@ using System.Collections.Generic;
 public class NavMeshofCustomer_FairVer : MonoBehaviour
 {
 
-    private NavMeshAgent agent;
+    private UnityEngine.AI.NavMeshAgent agent;
     private List<Transform> points = new List<Transform>();
 
     private Animator anim;
@@ -71,7 +71,7 @@ public class NavMeshofCustomer_FairVer : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 
         // ファイルを読まずにランダムに歩かせる場合
         if (readFileOrNot == false)
@@ -85,7 +85,7 @@ public class NavMeshofCustomer_FairVer : MonoBehaviour
                 // point の個数だけループを回して SetDestination に登録する
                 for (int i = 0; i < 13; i++)
                 {
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point" + i));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point" + i));
                 }
                 agent.SetDestination(points[(int)Mathf.Round(randNum * 12)].position);
             }
@@ -478,43 +478,43 @@ public class NavMeshofCustomer_FairVer : MonoBehaviour
             switch (areaSymbol)
             {
                 case "A":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point0"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point0"));
                     break;
                 case "B":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point1"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point1"));
                     break;
                 case "C":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point2"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point2"));
                     break;
                 case "D":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point3"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point3"));
                     break;
                 case "E":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point4"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point4"));
                     break;
                 case "F":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point5"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point5"));
                     break;
                 case "G":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point6"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point6"));
                     break;
                 case "H":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point7"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point7"));
                     break;
                 case "I":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point8"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point8"));
                     break;
                 case "J":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point9"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point9"));
                     break;
                 case "K":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point10"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point10"));
                     break;
                 case "L":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point11"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point11"));
                     break;
                 case "M":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point12"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point12"));
                     break;
                 default:
                     //Debug.Log("FromAreaSymbolsToPoints Error : 予期しない文字が areaSymbols に存在 → " + areaSymbol);

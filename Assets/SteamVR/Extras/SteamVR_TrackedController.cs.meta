@@ -1,0 +1,27 @@
+<<<<<<< HEAD
+fileFormatVersion: 2
+guid: 7346a42905a29b347b1f492e8ad7b49f
+timeCreated: 1430337756
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+=======
+fileFormatVersion: 2
+guid: 7346a42905a29b347b1f492e8ad7b49f
+timeCreated: 1430337756
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+>>>>>>> 684eebeece1ce14769f563c1c5c9ea0928383a38

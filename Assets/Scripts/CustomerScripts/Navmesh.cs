@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Navmesh : MonoBehaviour {
 
-    private NavMeshAgent agent;
+    private UnityEngine.AI.NavMeshAgent agent;
     private Transform[] points = new Transform[4];
     private int index = 0;
 
@@ -11,10 +11,10 @@ public class Navmesh : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         for(int i = 0; i < 4; i++)
         {
-            points[i] = GameObject.Find("Plane").transform.FindChild("point" + i);
+            points[i] = GameObject.Find("Plane").transform.Find("point" + i);
         }
         agent.SetDestination(points[0].position);
       //  anim = GetComponent<Animator>();

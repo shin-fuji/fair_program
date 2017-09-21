@@ -28,27 +28,27 @@ public class fowardTest : MonoBehaviour
     {
         // FindChildは入れ子構造に対応させて複数使えるらしい
         playerHip = GameObject.Find("Player").transform.
-            FindChild("Robot_References").
-            FindChild("Robot_Reference").
-            FindChild("Robot_Hips").gameObject;
+            Find("Robot_References").
+            Find("Robot_Reference").
+            Find("Robot_Hips").gameObject;
         playerLShld = GameObject.Find("Player").transform.
-            FindChild("Robot_References").
-            FindChild("Robot_Reference").
-            FindChild("Robot_Hips").
-            FindChild("Robot_Spine").
-            FindChild("Robot_Spine1").
-            FindChild("Robot_Spine2").
-            FindChild("Robot_Spine3").
-            FindChild("Robot_LeftShoulder").gameObject;
+            Find("Robot_References").
+            Find("Robot_Reference").
+            Find("Robot_Hips").
+            Find("Robot_Spine").
+            Find("Robot_Spine1").
+            Find("Robot_Spine2").
+            Find("Robot_Spine3").
+            Find("Robot_LeftShoulder").gameObject;
         playerRShld = GameObject.Find("Player").transform.
-            FindChild("Robot_References").
-            FindChild("Robot_Reference").
-            FindChild("Robot_Hips").
-            FindChild("Robot_Spine").
-            FindChild("Robot_Spine1").
-            FindChild("Robot_Spine2").
-            FindChild("Robot_Spine3").
-            FindChild("Robot_RightShoulder").gameObject;
+            Find("Robot_References").
+            Find("Robot_Reference").
+            Find("Robot_Hips").
+            Find("Robot_Spine").
+            Find("Robot_Spine1").
+            Find("Robot_Spine2").
+            Find("Robot_Spine3").
+            Find("Robot_RightShoulder").gameObject;
         Cam = GameObject.Find("FisheyeViewCamera");
     }
 

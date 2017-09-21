@@ -8,8 +8,16 @@ using System.Collections.Generic;
 /// </summary>
 public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+    private UnityEngine.AI.NavMeshAgent agent;
+=======
+=======
+>>>>>>> 684eebeece1ce14769f563c1c5c9ea0928383a38
+    private GameObject player;
     private NavMeshAgent agent;
+>>>>>>> 684eebeece1ce14769f563c1c5c9ea0928383a38
     private List<Transform> points = new List<Transform>();
 
     private Animator anim;
@@ -82,8 +90,9 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        player = GameObject.Find("PlayerController");
 
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 
 
 
@@ -99,7 +108,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 // point の個数だけループを回して SetDestination に登録する
                 for (int i = 0; i < POINT_NUM; i++)
                 {
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point" + i));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point" + i));
                 }
                 agent.SetDestination(points[(int)Mathf.Round(randNum * POINT_NUM)].position);
             }
@@ -126,32 +135,27 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             Debug.Log("points[] num = " + pointsCount);
             agent.SetDestination(points[0].position);
 
-
-            //int num = 0;
-            //foreach (var a in behavSymbols)
-            //{
-            //    Debug.Log("behavSymbols[" + num + "] = " + a);
-            //    num++;
-            //}
-            //num = 0;
-            //foreach (var a in areaSymbols)
-            //{
-            //    Debug.Log("areaSymbols[" + num + "] = " + a);
-            //    num++;
-            //}
         }
 
 
         anim = GetComponent<Animator>();
-        anim.SetFloat("Speed", 1.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // タイミングの微妙なずれで準備が整う前にResume, SetDestination などしようと
-        // したときに、エラーが起こらないように
-        //if (agent.pathStatus != NavMeshPathStatus.PathInvalid) return;
+        if (Vector3.Distance(this.transform.position, player.transform.position) < 2)
+        {
+            agent.speed = 0.05f;
+            anim.speed = 0.6f;
+        }
+        else
+        {
+            agent.speed = 1f;
+            anim.speed = 0.75f;
+        }
+
+        Debug.Log(agent.speed);
 
         animInfo = GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
 
@@ -164,7 +168,6 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         if (walkerOrNot == true)
         {
             transform.Translate(transform.forward * Time.deltaTime, Space.World);//前に移動
-            anim.SetFloat("Speed", 1.0f);
             return;
         }
 
@@ -435,9 +438,9 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 if (walkerOrNot)
                 {
                     if(Vector3.Angle(transform.forward, new Vector3(1,0,0)) < 45)
-                        agent.SetDestination(GameObject.Find("SecSphere").transform.FindChild("point" + LO_EXIT).position);
+                        agent.SetDestination(GameObject.Find("SecSphere").transform.Find("point" + LO_EXIT).position);
                     else
-                        agent.SetDestination(GameObject.Find("SecSphere").transform.FindChild("point" + RI_EXIT).position);
+                        agent.SetDestination(GameObject.Find("SecSphere").transform.Find("point" + RI_EXIT).position);
                 }
                 mode = COR;
                 break;
@@ -455,23 +458,11 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
     void SetAnim()
     {
-        if (agent.pathStatus != NavMeshPathStatus.PathInvalid)
+        if (agent.pathStatus != UnityEngine.AI.NavMeshPathStatus.PathInvalid)
         {
             return;
         }
-
-        // playerの速度に応じてanimパラメータを調整
-        if (agent.velocity.magnitude >= 0.2f)
-        {
-            anim.SetFloat("Speed", 1.0f);
-        }
-        else
-        {
-            anim.SetFloat("Speed", 0f);
-        }
-
-        //Debug.Log("mode = " + mode + ", rand = " + turningRand + ", velocity = " + agent.velocity.magnitude + ", Speed = " + anim.GetFloat("Speed"));
-        //Debug.Log("Speed = " + anim.GetFloat("Speed"));
+        
 
         // Turning is true なら、いったん動きを止める
         if (anim.GetBool("Turning") == true ||
@@ -480,14 +471,12 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             animInfo.fullPathHash == Animator.StringToHash("Base Layer.LookAround"))
         {
             agent.velocity = Vector3.zero;
-            agent.speed = 0f;
             //agent.updatePosition = false;
             agent.updateRotation = false;
             agent.Stop();
         }
         else
         {
-            agent.speed = 1;
             //agent.updatePosition = true;
             agent.updateRotation = true;
             agent.Resume();
@@ -501,55 +490,55 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             switch (areaSymbol)
             {
                 case "A":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point0"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point0"));
                     break;
                 case "B":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point1"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point1"));
                     break;
                 case "C":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point2"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point2"));
                     break;
                 case "D":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point3"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point3"));
                     break;
                 case "E":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point4"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point4"));
                     break;
                 case "F":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point5"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point5"));
                     break;
                 case "G":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point6"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point6"));
                     break;
                 case "H":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point7"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point7"));
                     break;
                 case "I":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point8"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point8"));
                     break;
                 case "J":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point9"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point9"));
                     break;
                 case "K":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point10"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point10"));
                     break;
                 case "L":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point11"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point11"));
                     break;
                 case "M":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point12"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point12"));
                     break;
                 case "N":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point13"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point13"));
                     break;
                 case "O":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point14"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point14"));
                     break;
                 case "P":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point15"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point15"));
                     break;
                 case "Q":
-                    points.Add(GameObject.Find("SecSphere").transform.FindChild("point16"));
+                    points.Add(GameObject.Find("SecSphere").transform.Find("point16"));
                     break;
                 default:
                     //Debug.Log("FromAreaSymbolsToPoints Error : 予期しない文字が areaSymbols に存在 → " + areaSymbol);
