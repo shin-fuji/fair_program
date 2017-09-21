@@ -75,7 +75,7 @@ public class RobotBehaviourScript_FairJikkenn2 : MonoBehaviour
         // 店員の位置を取得
         for (int i = 0; i < 10; i++)
         {
-            clerkPos.Add(GameObject.Find("Clerks").transform.FindChild("Clerk" + i).transform.position);
+            clerkPos.Add(GameObject.Find("Clerks").transform.Find("Clerk" + i).transform.position);
         }
     }
 

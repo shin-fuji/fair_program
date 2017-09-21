@@ -24,12 +24,12 @@ public class PlayerBehavior : MonoBehaviour
         refObj = GameObject.Find("PlayerController");
 
         // FindChildは入れ子構造に対応させて複数使えるらしい
-        playerHip = transform.FindChild("Robot_References").
-            FindChild("Robot_Reference").
-            FindChild("Robot_Hips").gameObject;
+        playerHip = transform.Find("Robot_References").
+            Find("Robot_Reference").
+            Find("Robot_Hips").gameObject;
 
-        playerCon = transform.FindChild("PlayerController").gameObject;
-        ImmersiveCam = transform.FindChild("ImmersiveCamera").gameObject;
+        playerCon = transform.Find("PlayerController").gameObject;
+        ImmersiveCam = transform.Find("ImmersiveCamera").gameObject;
 
     }
 	
