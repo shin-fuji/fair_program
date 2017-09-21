@@ -10,9 +10,12 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     private UnityEngine.AI.NavMeshAgent agent;
 =======
+=======
+>>>>>>> 684eebeece1ce14769f563c1c5c9ea0928383a38
 =======
 >>>>>>> 684eebeece1ce14769f563c1c5c9ea0928383a38
     private GameObject player;

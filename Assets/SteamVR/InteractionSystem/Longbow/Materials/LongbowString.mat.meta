@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 fileFormatVersion: 2
 guid: 40fa752affdc6cf45a47396764154085
 timeCreated: 1454951948
@@ -7,6 +8,16 @@ NativeFormatImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+=======
+fileFormatVersion: 2
+guid: 40fa752affdc6cf45a47396764154085
+timeCreated: 1454951948
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+>>>>>>> 684eebeece1ce14769f563c1c5c9ea0928383a38
 =======
 fileFormatVersion: 2
 guid: 40fa752affdc6cf45a47396764154085

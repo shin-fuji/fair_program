@@ -20,6 +20,7 @@ public class PlayerBehavior : MonoBehaviour
     void Start () {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         // PlayerControllerの情報を使う
         refObj = GameObject.Find("PlayerController");
@@ -32,6 +33,8 @@ public class PlayerBehavior : MonoBehaviour
         playerCon = transform.Find("PlayerController").gameObject;
         ImmersiveCam = transform.Find("ImmersiveCamera").gameObject;
 
+=======
+>>>>>>> 684eebeece1ce14769f563c1c5c9ea0928383a38
 =======
 >>>>>>> 684eebeece1ce14769f563c1c5c9ea0928383a38
 =======

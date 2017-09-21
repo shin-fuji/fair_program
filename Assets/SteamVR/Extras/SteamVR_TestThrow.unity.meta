@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 fileFormatVersion: 2
 guid: 0d936163b5e9a5047b5e4ba5afaf5126
 timeCreated: 1437513966
@@ -7,6 +8,16 @@ DefaultImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+=======
+fileFormatVersion: 2
+guid: 0d936163b5e9a5047b5e4ba5afaf5126
+timeCreated: 1437513966
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+>>>>>>> 684eebeece1ce14769f563c1c5c9ea0928383a38
 =======
 fileFormatVersion: 2
 guid: 0d936163b5e9a5047b5e4ba5afaf5126
