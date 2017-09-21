@@ -45,8 +45,6 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     // アニメーション関連の変数
     AnimatorStateInfo animInfo;
     Vector3 from;
-    [SerializeField]
-    private float Speed = 1;
 
     float randNum = 0;
 
@@ -114,15 +112,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         {
             // どの店の前にいるかを取得する
             NavMeshofCustomer_Fair2Ver mode = GetComponent<NavMeshofCustomer_Fair2Ver>();
-
-            //RobotTurning(
-            //    transform.position + from,
-            //    transform.position + Quaternion.Euler(0, -90, 0) * from);
-
-            // 店員のほうを向く
-            //Debug.Log("mode = " + mode.mode);
-            //Debug.Log("clerkPos = " + clerkPos[mode.mode]);
-            //Debug.Log("pos      = " + transform.position);
+            
             if (mode.mode <= 9)
             {
                 RobotTurning(transform.position + from, clerkPos[mode.mode]);
@@ -133,12 +123,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         {
             // どの店の前にいるかを取得する
             NavMeshofCustomer_Fair2Ver mode = GetComponent<NavMeshofCustomer_Fair2Ver>();
-
-            //RobotTurning(
-            //    transform.position + Quaternion.Euler(0, -90, 0) * from,
-            //    transform.position + from);
-
-            // 向き直る
+            
             if (mode.mode <= 9) RobotTurning(clerkPos[mode.mode], transform.position + from);
 
             anim.SetBool("Turning", false);
