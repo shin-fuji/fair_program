@@ -7,8 +7,8 @@ using System.Collections;
 /// </summary>
 public class SubCameraController : MonoBehaviour
 {
-    public GameObject player; // GameObject保存用変数、[Inspector]から設定できるように public に
-    private Vector3 offset;   // カメラオフセット保存用変数、Start() 内初期化するので private に
+    public GameObject player;
+    private Vector3 offset;
     private Quaternion rot_fixed; // カメラの角度は固定したい
 
     void Start()

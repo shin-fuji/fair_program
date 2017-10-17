@@ -9,13 +9,17 @@ public class fowardTest : MonoBehaviour
     public GameObject player; // GameObject保存用変数、[Inspector]から設定できるように public に
     private Vector3 offset;   // オフセット保存用変数、Start() 内初期化するので private に
     // Playerの体の各位置の情報を取得
-    GameObject playerHip;
-    GameObject playerLShld;
-    GameObject playerRShld;
+    [SerializeField]
+    private GameObject playerHip;
+    [SerializeField]
+    private GameObject playerLShld;
+    [SerializeField]
+    private GameObject playerRShld;
     Vector3 playerHipPos;
     Vector3 playerLShldPos;
     Vector3 playerRShldPos;
-    GameObject Cam;
+    [SerializeField]
+    private GameObject Cam;
 
     // 腰と両肩の位置を外積して得られたベクトル
     // このベクトルの向きは、必ずニューロンの向いている前方向と一致する
@@ -26,30 +30,7 @@ public class fowardTest : MonoBehaviour
 
     void Start()
     {
-        // FindChildは入れ子構造に対応させて複数使えるらしい
-        playerHip = GameObject.Find("Player").transform.
-            Find("Robot_References").
-            Find("Robot_Reference").
-            Find("Robot_Hips").gameObject;
-        playerLShld = GameObject.Find("Player").transform.
-            Find("Robot_References").
-            Find("Robot_Reference").
-            Find("Robot_Hips").
-            Find("Robot_Spine").
-            Find("Robot_Spine1").
-            Find("Robot_Spine2").
-            Find("Robot_Spine3").
-            Find("Robot_LeftShoulder").gameObject;
-        playerRShld = GameObject.Find("Player").transform.
-            Find("Robot_References").
-            Find("Robot_Reference").
-            Find("Robot_Hips").
-            Find("Robot_Spine").
-            Find("Robot_Spine1").
-            Find("Robot_Spine2").
-            Find("Robot_Spine3").
-            Find("Robot_RightShoulder").gameObject;
-        Cam = GameObject.Find("FisheyeViewCamera");
+
     }
 
     // Update is called once per frame

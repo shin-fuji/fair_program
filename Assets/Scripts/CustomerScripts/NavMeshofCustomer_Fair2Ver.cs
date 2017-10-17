@@ -8,8 +8,8 @@ using System.Collections.Generic;
 /// </summary>
 public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 {
-
     private UnityEngine.AI.NavMeshAgent agent;
+    private GameObject player;
     private List<Transform> points = new List<Transform>();
 
     private Animator anim;
@@ -82,6 +82,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        player = GameObject.Find("PlayerController");
 
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 
@@ -126,32 +127,27 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             Debug.Log("points[] num = " + pointsCount);
             agent.SetDestination(points[0].position);
 
-
-            //int num = 0;
-            //foreach (var a in behavSymbols)
-            //{
-            //    Debug.Log("behavSymbols[" + num + "] = " + a);
-            //    num++;
-            //}
-            //num = 0;
-            //foreach (var a in areaSymbols)
-            //{
-            //    Debug.Log("areaSymbols[" + num + "] = " + a);
-            //    num++;
-            //}
         }
 
 
         anim = GetComponent<Animator>();
-        anim.SetFloat("Speed", 1.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // タイミングの微妙なずれで準備が整う前にResume, SetDestination などしようと
-        // したときに、エラーが起こらないように
-        //if (agent.pathStatus != NavMeshPathStatus.PathInvalid) return;
+        if (Vector3.Distance(this.transform.position, player.transform.position) < 2)
+        {
+            agent.speed = 0.05f;
+            anim.speed = 0.6f;
+        }
+        else
+        {
+            agent.speed = 1f;
+            anim.speed = 0.75f;
+        }
+
+        Debug.Log(agent.speed);
 
         animInfo = GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
 
@@ -164,7 +160,6 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         if (walkerOrNot == true)
         {
             transform.Translate(transform.forward * Time.deltaTime, Space.World);//前に移動
-            anim.SetFloat("Speed", 1.0f);
             return;
         }
 
@@ -459,19 +454,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         {
             return;
         }
-
-        // playerの速度に応じてanimパラメータを調整
-        if (agent.velocity.magnitude >= 0.2f)
-        {
-            anim.SetFloat("Speed", 1.0f);
-        }
-        else
-        {
-            anim.SetFloat("Speed", 0f);
-        }
-
-        //Debug.Log("mode = " + mode + ", rand = " + turningRand + ", velocity = " + agent.velocity.magnitude + ", Speed = " + anim.GetFloat("Speed"));
-        //Debug.Log("Speed = " + anim.GetFloat("Speed"));
+        
 
         // Turning is true なら、いったん動きを止める
         if (anim.GetBool("Turning") == true ||
@@ -480,14 +463,12 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             animInfo.fullPathHash == Animator.StringToHash("Base Layer.LookAround"))
         {
             agent.velocity = Vector3.zero;
-            agent.speed = 0f;
             //agent.updatePosition = false;
             agent.updateRotation = false;
             agent.Stop();
         }
         else
         {
-            agent.speed = 1;
             //agent.updatePosition = true;
             agent.updateRotation = true;
             agent.Resume();

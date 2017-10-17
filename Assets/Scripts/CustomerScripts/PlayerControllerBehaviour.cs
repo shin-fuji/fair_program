@@ -25,12 +25,7 @@ public class PlayerControllerBehaviour : MonoBehaviour
     private Vector3 lastRLegPos;
     private Vector3 lastLUpLegPos;
     private Vector3 lastRUpLegPos;
-    
 
-    // Awake() is executed when instances are loaded.
-    void Awake()
-    {
-    }
 
     // Use this for initialization
     void Start()
@@ -86,10 +81,7 @@ public class PlayerControllerBehaviour : MonoBehaviour
     {
         Vector3 LLegVec = LLegPos - LUpLegPos;
         Vector3 RLegVec = RLegPos - RUpLegPos;
-
-
-        //Debug.Log("<color=red>Angle = " + Vector3.Angle(LLegVec, RLegVec).ToString() + "</color>");
-        //Debug.Log("<color=green>LegDis = " + VectorDistance(LLegPos, RLegPos).ToString() + "</color>");
+        
 
         if (Vector3.Angle(LLegVec, RLegVec) > 25) return true;
         else return false;
