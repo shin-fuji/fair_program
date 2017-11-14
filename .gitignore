@@ -12,13 +12,18 @@ Library/
 ExportedObj/
 *.svd
 *.userprefs
+*.userprefs.meta
 *.csproj
+*.csproj.user
 *.pidb
 *.suo
 *.sln
+*.sln.meta
 *.user
 *.unityproj
+*.bat
 *.booproj
+*~
 
 # ============ #
 # OS generated #
@@ -31,6 +36,8 @@ ExportedObj/
 Icon?
 ehthumbs.db
 Thumbs.db
+*[! -~]*
+*.pidb.meta
 
 # ============ #
 # for others   #
