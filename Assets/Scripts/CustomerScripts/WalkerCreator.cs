@@ -10,9 +10,11 @@ public class WalkerCreator : MonoBehaviour {
     public GameObject originalWalker;
     public static List<GameObject> walkerList = new List<GameObject>();
 
-    public int walkerNum;
+    [Header("Customerに関する変数")]
 
-    // 客の生成時間間隔
+    [Tooltip("フィールド内に存在するCustomerの人数の上限")]
+    public int walkerNum;
+    [Tooltip("客の生成時間間隔")]
     public float timeInterval;
 
     // ※jikkenn2用　camJikkenn2番目以外の客のカメラコンポーネントを無効にするのに必要な変数

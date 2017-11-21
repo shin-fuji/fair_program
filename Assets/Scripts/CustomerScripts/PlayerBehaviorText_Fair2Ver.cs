@@ -30,6 +30,19 @@ public class PlayerBehaviorText_Fair2Ver : MonoBehaviour
     /// thinking          : 5
     /// look around       : 6
     /// </summary>
+    public enum WhichBehavior
+    {
+        OTHERS = 0,
+        WALK,
+        STOP,
+        TURNING,
+        PICKUP,
+        THINKING,
+        LOOKAROUND
+    }
+    public WhichBehavior whichBehavior;
+
+    /*
     const int OTHERS = 0,
               WALK = 1,
               STOP = 2,
@@ -38,6 +51,7 @@ public class PlayerBehaviorText_Fair2Ver : MonoBehaviour
               THINKING = 5,
               LOOKAROUND = 6;
     public int whichBehavior = WALK;
+    */
 
 
     /// <summary>
@@ -74,7 +88,8 @@ public class PlayerBehaviorText_Fair2Ver : MonoBehaviour
     //public List<List<string>> playerBehavList = new List<List<string>>();
     //public List<string> behavArray = new List<string>();
 
-    int lastBehav = -1;
+    //int lastBehav = -1;
+    WhichBehavior lastBehav;
     float time = 0f;
 
 
@@ -114,7 +129,7 @@ public class PlayerBehaviorText_Fair2Ver : MonoBehaviour
             // 1秒以上停止していたらwhichBehavior = STOPに
             if (walkOrNot == true)
             {
-                whichBehavior = WALK;
+                whichBehavior = WhichBehavior.WALK;
                 time = 0;
             }
             else if (walkOrNot == false)
@@ -122,7 +137,7 @@ public class PlayerBehaviorText_Fair2Ver : MonoBehaviour
                 time += Time.deltaTime;
                 if (time > 1.0f)
                 {
-                    whichBehavior = STOP;
+                    whichBehavior = WhichBehavior.STOP;
                     time = 0;
                 }
             }
@@ -132,17 +147,17 @@ public class PlayerBehaviorText_Fair2Ver : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 Debug.Log("Alpha4(PICKUP) is pushed.");
-                whichBehavior = PICKUP;
+                whichBehavior = WhichBehavior.PICKUP;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha5))
             {
                 Debug.Log("Alpha5(THINKING) is pushed.");
-                whichBehavior = THINKING;
+                whichBehavior = WhichBehavior.THINKING;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha6))
             {
                 Debug.Log("Alpha6(LOOKAROUND) is pushed.");
-                whichBehavior = LOOKAROUND;
+                whichBehavior = WhichBehavior.LOOKAROUND;
             }
 
             // 行動が変わるごとに毎に行動記号を書き込んでいく
@@ -170,7 +185,7 @@ public class PlayerBehaviorText_Fair2Ver : MonoBehaviour
             // エリアごとにbehavArrayを区切ってplayerBehavListに
             // playerBehavListにつないでいく
             playerBehavList.Add(WAT);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
             //playerBehavList.Add(behavArray);
             //behavArray.Clear();
             //behavArray.Add(WAT);
@@ -180,89 +195,89 @@ public class PlayerBehaviorText_Fair2Ver : MonoBehaviour
         {
             //sw.WriteLine(TA);
             playerBehavList.Add(TA);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
             //Debug.Log("Enter TA, " + TA);
         }
         else if (collider.gameObject.tag == "Sec_SHA")
         {
             //sw.WriteLine(SHA);
             playerBehavList.Add(SHA);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
             //Debug.Log("Enter SHA, " + SHA);
         }
         else if (collider.gameObject.tag == "Sec_YA")
         {
             //sw.WriteLine(YA);
             playerBehavList.Add(YA);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
             //Debug.Log("Enter YA, " + YA);
         }
         else if (collider.gameObject.tag == "Sec_KAI")
         {
             //sw.WriteLine(KAI);
             playerBehavList.Add(KAI);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
             //Debug.Log("Enter KAI, " + KAI);
         }
         else if (collider.gameObject.tag == "Sec_WAN")
         {
             //sw.WriteLine(WAN);
             playerBehavList.Add(WAN);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
             //Debug.Log("Enter WAN, " + WAN);
         }
         else if (collider.gameObject.tag == "Sec_YO")
         {
             //sw.WriteLine(YO);
             playerBehavList.Add(YO);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
             //Debug.Log("Enter YO, " + YO);
         }
         else if (collider.gameObject.tag == "Sec_KI")
         {
             //sw.WriteLine(KI);
             playerBehavList.Add(KI);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
             //Debug.Log("Enter KI, " + KI);
         }
         else if (collider.gameObject.tag == "Sec_KAK")
         {
             //sw.WriteLine(KAK);
             playerBehavList.Add(KAK);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
             //Debug.Log("Enter KAK, " + KAK);
         }
         else if (collider.gameObject.tag == "Sec_RI")
         {
             //sw.WriteLine(RI);
             playerBehavList.Add(RI);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
             //Debug.Log("Enter RI");
         }
         else if (collider.gameObject.tag == "Sec_FAN_1")
         {
             playerBehavList.Add(FAN_1);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
         }
         else if (collider.gameObject.tag == "Sec_FAN_2")
         {
             playerBehavList.Add(FAN_2);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
         }
         else if (collider.gameObject.tag == "Sec_F_STA")
         {
             playerBehavList.Add(STA_F);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
         }
         else if (collider.gameObject.tag == "Sec_S_STA")
         {
             playerBehavList.Add(STA_S);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
         }
         else if (collider.gameObject.tag == "Sec_COR")
         {
             playerBehavList.Add(COR);
-            playerBehavList.Add(WALK.ToString());
+            playerBehavList.Add(WhichBehavior.WALK.ToString());
         }
     }
 }
