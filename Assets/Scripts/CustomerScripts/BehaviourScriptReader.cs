@@ -13,7 +13,7 @@ public class BehaviourScriptReader : MonoBehaviour
     char[] SPLIT = { '\n' };
 
     // 行動記号列を読み込むか
-    public static bool readFileOrNot = false;
+    public static bool readFileOrNot = true;
 
     // 一番最初に呼び出される
     void Awake()
@@ -37,7 +37,8 @@ public class BehaviourScriptReader : MonoBehaviour
     {
 
         // FileReadTest.txtファイルを読み込む
-        FileInfo fi = new FileInfo(Application.dataPath + "/HerdBehav_test.txt");
+        //FileInfo fi = new FileInfo(Application.dataPath + "/HerdBehav_test.txt");
+        FileInfo fi = new FileInfo(Application.dataPath + "/behavior_array_demo.txt");
         try
         {
             // 一行毎読み込み
@@ -53,6 +54,7 @@ public class BehaviourScriptReader : MonoBehaviour
         {
             // 改行コード
             //behavLine += SetDefaultText();
+            Debug.Log("Designated file does not exist.");
         }
 
 

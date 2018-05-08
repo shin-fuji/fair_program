@@ -79,12 +79,17 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     // lookaroundのためだけの変数
     AnimatorStateInfo animInfo;
 
+    private RobotBehaviourScript_Fair2Ver r;
+
     // Use this for initialization
     void Start()
     {
         player = GameObject.Find("PlayerController");
 
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+        // 同じオブジェクト(Customer)のスクリプトを参照
+        r = GetComponent<RobotBehaviourScript_Fair2Ver>();
 
 
 
@@ -136,6 +141,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /* デモの時だけ外す
         if (Vector3.Distance(this.transform.position, player.transform.position) < 2)
         {
             agent.speed = 0.05f;
@@ -146,6 +152,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             agent.speed = 1f;
             anim.speed = 0.75f;
         }
+        */
 
         Debug.Log(agent.speed);
 
@@ -311,7 +318,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             {
 
                 // 同じオブジェクト(Customer)のスクリプトを参照
-                RobotBehaviourScript_FairVer r = GetComponent<RobotBehaviourScript_FairVer>();
+                //RobotBehaviourScript_Fair2Ver r = GetComponent<RobotBehaviourScript_Fair2Ver>();
 
                 r.doBehavior = 2;
                 doSpecificBehavior = false;
@@ -324,7 +331,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
 
                 // 同じオブジェクト(Customer)のスクリプトを参照
-                RobotBehaviourScript_FairVer r = GetComponent<RobotBehaviourScript_FairVer>();
+                //RobotBehaviourScript_Fair2Ver r = GetComponent<RobotBehaviourScript_Fair2Ver>();
 
                 r.doBehavior = 4;
                 doSpecificBehavior = false;
@@ -337,7 +344,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 randNum = Random.Range(0f, 1f);
 
                 // 同じオブジェクト(Customer)のスクリプトを参照
-                RobotBehaviourScript_FairVer r = GetComponent<RobotBehaviourScript_FairVer>();
+                //RobotBehaviourScript_Fair2Ver r = GetComponent<RobotBehaviourScript_Fair2Ver>();
 
                 r.doBehavior = 5;
                 doSpecificBehavior = false;
@@ -350,7 +357,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 randNum = Random.Range(0f, 1f);
 
                 // 同じオブジェクト(Customer)のスクリプトを参照
-                RobotBehaviourScript_FairVer r = GetComponent<RobotBehaviourScript_FairVer>();
+                //RobotBehaviourScript_Fair2Ver r = GetComponent<RobotBehaviourScript_Fair2Ver>();
 
                 r.doBehavior = 6;
                 doSpecificBehavior = false;
@@ -362,6 +369,16 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 // 次のエリアへ移動するまでこの if 節は実行しない
                 doSpecificBehavior = false;
             }
+        }
+
+        if (r.animInfo.fullPathHash == Animator.StringToHash("Base Layer.Walk"))
+        {
+            agent.isStopped = false;
+        }
+        else
+        {
+            // 行動を行うときは移動させない
+            agent.isStopped = true;
         }
 
     }

@@ -24,7 +24,7 @@ public class ButtonBehavSaveScript : MonoBehaviour
     public void ButtonPush()
     {
         // 別のオブジェクト(Player)のスクリプトを参照
-        PlayerBehaviourText_FairVer playerBehavText = playerBehavTextObj.GetComponent<PlayerBehaviourText_FairVer>();
+        PlayerBehaviorText_Fair2Ver playerBehavText = playerBehavTextObj.GetComponent<PlayerBehaviorText_Fair2Ver>();
         
         SaveBehav(playerBehavText.playerBehavList);
 

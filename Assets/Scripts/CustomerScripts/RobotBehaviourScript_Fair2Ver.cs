@@ -43,7 +43,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     public int doBehavior;
 
     // アニメーション関連の変数
-    AnimatorStateInfo animInfo;
+    public AnimatorStateInfo animInfo;
     Vector3 from;
 
     float randNum = 0;
@@ -60,6 +60,9 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
     // 店員の位置リスト
     private List<Vector3> clerkPos = new List<Vector3>();
+
+    // 計算されたherd behavior
+    private int hb;
 
 
 
@@ -211,8 +214,8 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
 
     /// <summary>
+    /// HeadBehavior を計算
     /// 客が各売り場エリアにいる間ずっと呼ばれる
-    /// ここで HeadBehavior を計算している
     /// </summary>
     /// <param name="collider"></param>
     void OnTriggerStay(Collider collider)
@@ -270,9 +273,14 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
             // 自身のdoBehaviorに、とるべき行動の変数を入れる
             // 行動変数を平均したものを、自身の行動変数にしている
+            // つられる行動は「4.物を買う動作」「6.周囲を見回す移動」
             if (randNum > 0.7f)
             {
-                doBehavior = (int)Mathf.Round((float)i / num);
+                hb = (int)Mathf.Round((float)i / num);
+                if (hb == 4 || hb == 6)
+                {
+                    doBehavior = hb;
+                }
                 //Debug.Log("HeadBehavior == " + doBehavior);
             }
 
