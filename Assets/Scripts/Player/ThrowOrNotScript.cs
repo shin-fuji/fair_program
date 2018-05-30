@@ -30,7 +30,7 @@ public class ThrowOrNotScript : MonoBehaviour
     {
 
         // 別のオブジェクト(TestPlayer)のスクリプトを参照する場合
-        PlayerControllerBehaviour pcb = refObj.GetComponent<PlayerControllerBehaviour>();
+        //PlayerControllerBehaviour pcb = refObj.GetComponent<PlayerControllerBehaviour>();
         //throwornot = pcb.throwOrNot;
 
         if (throwornot == true) { throwOrNotStr = "○"; } else { throwOrNotStr = "×"; };

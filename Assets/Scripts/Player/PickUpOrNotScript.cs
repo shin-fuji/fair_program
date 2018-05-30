@@ -28,7 +28,7 @@ public class PickUpOrNotScript : MonoBehaviour
     {
 
         // 別のオブジェクト(TestPlayer)のスクリプトを参照する場合
-        PlayerControllerBehaviour pcb = refObj.GetComponent<PlayerControllerBehaviour>();
+        //PlayerControllerBehaviour pcb = refObj.GetComponent<PlayerControllerBehaviour>();
 
         if (pickupornot == true) { pickUpOrNotStr = "○"; } else { pickUpOrNotStr = "×"; };
         

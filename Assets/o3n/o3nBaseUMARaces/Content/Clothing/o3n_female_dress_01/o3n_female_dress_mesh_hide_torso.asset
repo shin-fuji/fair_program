@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c86f7fb3ea5bac04a857e5f4a0b30077, type: 3}
+  m_Name: o3n_female_dress_mesh_hide_torso
+  m_EditorClassIdentifier: 
+  _asset: {fileID: 11400000, guid: d199282923a5c894ebf456a5e57103f0, type: 2}
+  _serializedFlags:
+  - flags: 00000000000000e0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0f00000000000000000000006707fefdff3ffff3ffffff81fcffffffff3ffffb17fc030000000000000000feffffffff7fe07f80fffffffffffcef5ff00f00801ffcffffffff3f00000000020000000000000000000070060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000fcf701000000000000f01f00000000000000000000000000000000000000000000000000000000000000000000000000000000f83f803f00c00f000000
+    Count: 1828
