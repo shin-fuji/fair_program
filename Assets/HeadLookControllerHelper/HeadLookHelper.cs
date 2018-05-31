@@ -52,7 +52,9 @@ namespace Mebiustos.HeadLookControllerHelper {
         //}
 
         void Start() {
-            lookAtTargetObject = GameObject.FindGameObjectWithTag("PlayerHead").transform;
+            lookAtTargetObject = GameObject.Find("Camera (eye)").transform;
+            //lookAtTargetObject = GameObject.FindGameObjectWithTag("PlayerHead").transform;
+            //Debug.Log("Camera (eye) = " + lookAtTargetObject);
             if (!this.delaySetup)
                 this.Setup();
         }
