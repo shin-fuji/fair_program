@@ -25,6 +25,8 @@ namespace VRTK
 
         /// <summary>
         /// The SetPlayerObject method tags the given game object with a special player object class for easier identification.
+        /// 
+        /// 実行時に，[VRTK][AUTOGEN][○○○]というオブジェクトが自動生成され，その中に「VRTK_PlayerObject」というコンポーネントが存在する
         /// </summary>
         /// <param name="obj">The game object to add the player object class to.</param>
         /// <param name="objType">The type of player object that is to be assigned.</param>

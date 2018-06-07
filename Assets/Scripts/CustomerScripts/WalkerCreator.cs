@@ -90,7 +90,7 @@ public class WalkerCreator : MonoBehaviour {
                 n.behavLine = b.behavLineList[i];
                 n.readFileOrNot = true;
 
-                Debug.Log((i + 1) + "人目の行動記号列 : " + b.behavLineList[i]);
+                //Debug.Log((i + 1) + "人目の行動記号列 : " + b.behavLineList[i]);
             }
 
             walkerList.Add(walker);

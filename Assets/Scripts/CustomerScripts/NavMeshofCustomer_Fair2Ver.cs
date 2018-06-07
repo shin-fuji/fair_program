@@ -129,7 +129,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
             // エリア記号をcustomerの歩行ルートにセットする
             FromAreaSymbolsToPoints(areaSymbols);
-            Debug.Log("points[] num = " + pointsCount);
+            //Debug.Log("points[] num = " + pointsCount);
             agent.SetDestination(points[0].position);
 
         }
@@ -154,7 +154,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         }
         */
 
-        Debug.Log(agent.speed);
+        //Debug.Log(agent.speed);
 
         animInfo = GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
 
@@ -193,7 +193,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 }
                 // 他の客との衝突でスピードがおかしくなって進まなくなったときは、
                 // 一定時間で強制的に退場
-                if (timer_col > 60)
+                if (timer_col > 45)
                 {
                     WalkerCreator.walkerList.Remove(gameObject);
                     Destroy(gameObject);

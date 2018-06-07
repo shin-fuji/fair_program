@@ -70,8 +70,6 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     void Start()
     {
         transform = GetComponent<Transform>();
-
-        // アニメーターを取得
         anim = GetComponent<Animator>();
 
         // 店員の位置を取得
@@ -83,21 +81,19 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         Debug.Log("ApplyHeadBehaviour is " + ApplyHeadBehaviour);
     }
 
+
+
     // Update is called once per frame
     void Update()
     {
         // タイマー
         timer += Time.deltaTime;
 
-
         transform = GetComponent<Transform>();
-
         animInfo = GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
-
 
         // doBehaviour 変数に従って行動する
         DoBehavior(doBehavior);
-
 
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Walk"))
         {
@@ -165,6 +161,18 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
             anim.SetBool("LookAround", false);
             anim.SetBool("Turning", false);
+        }
+
+        // 歩いているときだけ視線移動をするように
+        if (whichBehavior == WALK)
+        {
+            if (GetComponent<HeadLookController>() != null)
+                GetComponent<HeadLookController>().enabled = true;
+        }
+        else
+        {
+            if (GetComponent<HeadLookController>() != null)
+                GetComponent<HeadLookController>().enabled = false;
         }
     }
 
