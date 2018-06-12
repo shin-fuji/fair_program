@@ -5,8 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Pausable : MonoBehaviour
 {
-
-    public GameObject player;
+    
     public GameObject OnPanel;
     public GameObject OnFinishPanel;
     public static bool pauseGame = false;
@@ -24,7 +23,7 @@ public class Pausable : MonoBehaviour
         // 4分間で自動的に終了するように設定
         if(pauseGame == false && finishGame == false) timer += Time.deltaTime;
 
-        //if (timer > TimeLimit) OnFinish();
+        if (timer > TimeLimit) OnFinish();
 
 
         if (Input.GetKeyDown(KeyCode.Escape))

@@ -191,13 +191,6 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                         agent.SetDestination(points[LO_EXIT].position);
                     return;
                 }
-                // 他の客との衝突でスピードがおかしくなって進まなくなったときは、
-                // 一定時間で強制的に退場
-                if (timer_col > 45)
-                {
-                    WalkerCreator.walkerList.Remove(gameObject);
-                    Destroy(gameObject);
-                }
 
 
                 switch (mode)
@@ -306,6 +299,14 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 // 特定の行動記号がなければ下の if 節で即座に false になる
                 doSpecificBehavior = true;
             }
+
+            // 他の客との衝突でスピードがおかしくなって進まなくなったときは、
+            // 一定時間で強制的に退場
+            if (timer_col > 45)
+            {
+                WalkerCreator.walkerList.Remove(gameObject);
+                Destroy(gameObject);
+            }
         }
 
 
@@ -317,9 +318,6 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             if (behav.Contains("2"))
             {
 
-                // 同じオブジェクト(Customer)のスクリプトを参照
-                //RobotBehaviourScript_Fair2Ver r = GetComponent<RobotBehaviourScript_Fair2Ver>();
-
                 r.doBehavior = 2;
                 doSpecificBehavior = false;
 
@@ -328,10 +326,6 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             if (behav.Contains("4"))
             {
                 randNum = Random.Range(0f, 1f);
-
-
-                // 同じオブジェクト(Customer)のスクリプトを参照
-                //RobotBehaviourScript_Fair2Ver r = GetComponent<RobotBehaviourScript_Fair2Ver>();
 
                 r.doBehavior = 4;
                 doSpecificBehavior = false;
@@ -343,9 +337,6 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
                 randNum = Random.Range(0f, 1f);
 
-                // 同じオブジェクト(Customer)のスクリプトを参照
-                //RobotBehaviourScript_Fair2Ver r = GetComponent<RobotBehaviourScript_Fair2Ver>();
-
                 r.doBehavior = 5;
                 doSpecificBehavior = false;
 
@@ -355,9 +346,6 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             {
 
                 randNum = Random.Range(0f, 1f);
-
-                // 同じオブジェクト(Customer)のスクリプトを参照
-                //RobotBehaviourScript_Fair2Ver r = GetComponent<RobotBehaviourScript_Fair2Ver>();
 
                 r.doBehavior = 6;
                 doSpecificBehavior = false;

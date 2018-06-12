@@ -118,7 +118,7 @@ public class PlayerBehaviorText_VIVE : MonoBehaviour
 
             // その他の細かい動作は
             // キー入力で判定する
-            if (Input.GetKeyDown(KeyCode.Alpha4))
+            if (Input.GetKey(KeyCode.Alpha4))
             {
                 Debug.Log("Alpha4(PICKUP) is pushed.");
                 whichBehavior = WhichBehavior.PICKUP;
@@ -261,7 +261,7 @@ public class PlayerBehaviorText_VIVE : MonoBehaviour
 
     /// <summary>
     /// 歩いているか否かを判定する関数
-    /// 両足の太もものベクトル間の角度を計算
+    /// 各フレーム間での位置の差が一定以上であれば，歩いているとみなす
     /// </summary>
     /// <param name="p1"></param>
     /// <param name="p2"></param>

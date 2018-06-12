@@ -12,20 +12,22 @@ using System.Text; //Encoding
 /// </summary>
 public class ButtonBehavSaveScript : MonoBehaviour
 {
-    GameObject playerBehavTextObj;
+    [SerializeField]
+    private GameObject playerBehavTextObj;
 
 
     void Start()
     {
-        playerBehavTextObj = GameObject.Find("Player");
+        //playerBehavTextObj = GameObject.Find("Player");
     }
 
 
     public void ButtonPush()
     {
         // 別のオブジェクト(Player)のスクリプトを参照
-        PlayerBehaviorText_Fair2Ver playerBehavText = playerBehavTextObj.GetComponent<PlayerBehaviorText_Fair2Ver>();
-        
+        //PlayerBehaviorText_Fair2Ver playerBehavText = playerBehavTextObj.GetComponent<PlayerBehaviorText_Fair2Ver>();
+        PlayerBehaviorText_VIVE playerBehavText = playerBehavTextObj.GetComponent<PlayerBehaviorText_VIVE>();
+
         SaveBehav(playerBehavText.playerBehavList);
 
         WalkerCreator.walkerList.Clear();

@@ -13,6 +13,9 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     // Customerのtransform情報を取得
     Transform transform;
 
+    // player 情報
+    private GameObject player; // [VRTK_SDKManager]->SteamVR->[CameraRig]
+
     Animator anim;
 
     // head behaviour を適用するかどうか
@@ -70,6 +73,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     void Start()
     {
         transform = GetComponent<Transform>();
+        player = GameObject.FindGameObjectsWithTag("Player")[0];
         anim = GetComponent<Animator>();
 
         // 店員の位置を取得
@@ -229,7 +233,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     void OnTriggerStay(Collider collider)
     {
 
-        // 0.3秒間隔で、ほかの客を取得
+        // 0.5秒間隔で、ほかの客を取得
         if (timer < TimeInterval) return;
 
         if (ApplyHeadBehaviour == true &&
@@ -238,6 +242,22 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
             // WalkEnd は無視
             if (collider.gameObject.tag == "WalkEnd") return;
+            
+            // 自身のタグを collider.gameObject.tag に設定
+            gameObject.tag = collider.gameObject.tag;
+
+            // player が近くにいれば，優先的にHBが発動する
+            if (VectorDistance(transform.position, player.transform.position) < 3)
+            {
+                Debug.Log(transform.name + " is near the player!");
+                doBehavior = (int)player.GetComponent<PlayerBehaviorText_VIVE>().whichBehavior;
+
+                // タイマーを初期化
+                timer = 0;
+                return;
+
+            }
+
 
             // 他客リストの初期化
             otherCustomerList.Clear();
@@ -248,11 +268,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             otherCustomerList.AddRange(GameObject.FindGameObjectsWithTag(collider.gameObject.tag));
             otherCustomerList.Remove(collider.gameObject);
             otherCustomerList.Remove(gameObject);
-
-
-
-            // 自身のタグを collider.gameObject.tag に設定
-            gameObject.tag = collider.gameObject.tag;
+            
 
             // 自分以外に客がいないなら終了
             if (otherCustomerList.Count == 0) return;
@@ -287,7 +303,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
                 hb = (int)Mathf.Round((float)i / num);
                 if (hb == 4 || hb == 6)
                 {
-                    doBehavior = hb;
+                    //doBehavior = hb;
                 }
                 //Debug.Log("HeadBehavior == " + doBehavior);
             }
@@ -318,5 +334,16 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         // 急に方向転換
         //transform.LookAt(new Vector3(to.x, from.y, to.z));
 
+    }
+
+    /// <summary>
+    /// x-z平面における二点間の距離を計算する
+    /// </summary>
+    /// <param name="v1">移動後の位置</param>
+    /// <param name="v2">移動前の位置</param>
+    /// <returns></returns>
+    private float VectorDistance(Vector3 v1, Vector3 v2)
+    {
+        return (float)System.Math.Sqrt(System.Math.Pow(v1.x - v2.x, 2) + System.Math.Pow(v1.z - v2.z, 2));
     }
 }
