@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 /// <summary>
 /// フィールド上(NavMesh)での客の動作を制御するためのスクリプト
 /// 場所データなども扱う
+/// 
+/// TODO
+/// ・現在，拍手を行動番号9に振り分けているが，その必要があるかどうか考える．ダンス終了後に必ず拍手させるという手もある．
+/// 
 /// </summary>
 public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 {
-    private UnityEngine.AI.NavMeshAgent agent;
+    private NavMeshAgent agent;
     private GameObject player;
     private List<Transform> points = new List<Transform>();
 
@@ -86,7 +91,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     {
         player = GameObject.Find("PlayerController");
 
-        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
 
         // 同じオブジェクト(Customer)のスクリプトを参照
         r = GetComponent<RobotBehaviourScript_Fair2Ver>();
@@ -107,7 +112,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 {
                     points.Add(GameObject.Find("SecSphere").transform.Find("point" + i));
                 }
-                agent.SetDestination(points[(int)Mathf.Round(randNum * POINT_NUM)].position);
+                agent.SetDestination(points[Mathf.RoundToInt(randNum * POINT_NUM)].position);
             }
             else
             // ただの歩行者
@@ -310,46 +315,51 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         }
 
 
-        // 行動記号列内に特定の行動記号があれば、その行動を一定の確率で起こす
+        // 行動記号列内に特定の行動記号があれば、その行動を起こす
         if (readFileOrNot == true && doSpecificBehavior == true)
         {
 
             // Stop 記号がある場合
-            if (behav.Contains("2"))
-            {
-
-                r.doBehavior = 2;
-                doSpecificBehavior = false;
-
-            }
+            //if (behav.Contains("2"))
+            //{
+            //    r.doBehavior = 2;
+            //    doSpecificBehavior = false;
+            //}
             // PickUp 記号がある場合
             if (behav.Contains("4"))
             {
-                randNum = Random.Range(0f, 1f);
-
                 r.doBehavior = 4;
                 doSpecificBehavior = false;
-
             }
             // Thinking 記号がある場合
             if (behav.Contains("5"))
             {
-
-                randNum = Random.Range(0f, 1f);
-
                 r.doBehavior = 5;
                 doSpecificBehavior = false;
-
             }
             // lookaround 記号がある場合
             if (behav.Contains("6"))
             {
-
-                randNum = Random.Range(0f, 1f);
-
                 r.doBehavior = 6;
                 doSpecificBehavior = false;
+            }
+            // appreciation 記号がある場合
+            if (behav.Contains("7"))
+            {
+                r.doBehavior = 7;
 
+                // appreciation + handclap 記号がある場合
+                if (behav.Contains("8"))
+                {
+                    r.doBehavior = 8;
+                }
+                // appreciation + applause 記号がある場合
+                if (behav.Contains("9"))
+                {
+                    r.doBehavior = 9;
+                }
+
+                doSpecificBehavior = false;
             }
             else
             {
@@ -359,14 +369,17 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             }
         }
 
-        if (r.animInfo.fullPathHash == Animator.StringToHash("Base Layer.Walk"))
+        if (agent.pathStatus != NavMeshPathStatus.PathInvalid)
         {
-            agent.isStopped = false;
-        }
-        else
-        {
-            // 行動を行うときは移動させない
-            agent.isStopped = true;
+            if (r.animInfo.fullPathHash == Animator.StringToHash("Base Layer.Walk"))
+            {
+                agent.isStopped = false;
+            }
+            else
+            {
+                // 行動を行うときは移動させない
+                agent.isStopped = true;
+            }
         }
 
     }
@@ -459,24 +472,25 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         {
             return;
         }
-        
 
-        // Turning is true なら、いったん動きを止める
+
+        // Turning is true または Appreciation is true なら、いったん動きを止める
         if (anim.GetBool("Turning") == true ||
             anim.GetBool("PickUp") == true ||
             anim.GetBool("Thinking") == true ||
-            animInfo.fullPathHash == Animator.StringToHash("Base Layer.LookAround"))
+            animInfo.fullPathHash == Animator.StringToHash("Base Layer.LookAround") ||
+            anim.GetBool("Appreciation") == true)
         {
             agent.velocity = Vector3.zero;
             //agent.updatePosition = false;
             agent.updateRotation = false;
-            agent.Stop();
+            agent.isStopped = true;
         }
         else
         {
             //agent.updatePosition = true;
             agent.updateRotation = true;
-            agent.Resume();
+            agent.isStopped = false;
         }
     }
 

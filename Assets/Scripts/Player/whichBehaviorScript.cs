@@ -22,7 +22,7 @@ public class whichBehaviorScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("whichBehavior : " + pbt_VIVE.whichBehavior.ToString());
+        //Debug.Log("whichBehavior : " + pbt_VIVE.whichBehavior.ToString());
         // スクリプト「PlayerBehaviorText_VIVE」内の WhichBehavior 型変数「whichBehavior」を表示
         whichBehavior_gui.text = "whichBehavior : " + pbt_VIVE.whichBehavior.ToString();
     }

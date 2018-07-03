@@ -6,6 +6,13 @@ using System.Collections.Generic;
 /// This script manages behaviours of the Robot(ex, which the robot is walking or not).
 /// モデルのアニメーションを制御するためのスクリプト
 /// HeadBehaviorの制御もここで行っている
+/// 
+/// TODO：
+/// ・鑑賞（行動番号7）について，アニメコントローラのboolをいつfalseにするかを考える
+/// ・現在，拍手を行動番号9に振り分けているが，その必要があるかどうか考える．ダンス終了後に必ず拍手させるという手もある．
+/// ・手拍子のHBは，必ず伝播するようにする
+/// ・ダンス鑑賞開始後，(randNum)秒後に手拍子を始めるようにする
+/// 
 /// </summary>
 public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 {
@@ -26,20 +33,26 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     //public bool defaultCustomer;
 
     // 自身がどの動作をしているかを表す定数
-    // others            : 0
+    // default           : 0
     // walk              : 1
-    // stop              : 2
+    // stop              : 2 
     // turing            : 3
     // pick up           : 4
     // thinking          : 5
     // look around       : 6
-    const int OTHERS = 0,
+    // appreciation      : 7
+    // handclap          : 8
+    // applause          : 9
+    const int DEFAULT = 0,
               WALK = 1,
               STOP = 2,
               TURNING = 3,
               PICKUP = 4,
               THINKING = 5,
-              LOOKAROUND = 6;
+              LOOKAROUND = 6,
+              APPRECIATION = 7,
+              HANDCLAP = 8,
+              APPLAUSE = 9;
     public int whichBehavior = WALK;
 
     // 特定の行動を起こすための変数
@@ -50,6 +63,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     Vector3 from;
 
     float randNum = 0;
+    float randNumHb = 0;
 
     // HerdBehaviorを扱うための変数
     List<GameObject> otherCustomerList = new List<GameObject>();
@@ -82,7 +96,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             clerkPos.Add(GameObject.Find("Clerks").transform.Find("Clerk" + i).transform.position);
         }
         
-        Debug.Log("ApplyHeadBehaviour is " + ApplyHeadBehaviour);
+        //Debug.Log("ApplyHeadBehaviour is " + ApplyHeadBehaviour);
     }
 
 
@@ -99,6 +113,8 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         // doBehaviour 変数に従って行動する
         DoBehavior(doBehavior);
 
+
+
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Walk"))
         {
             // アニメーション遷移のタイミングの関係でPickUp, Thinkingの初期化はここで行う
@@ -108,39 +124,29 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             // LookAroundTimer
             timerLA = 0;
 
-            whichBehavior = WALK;
-            from = transform.forward;
+            whichBehavior = DEFAULT;
+            from = transform.forward;  // 今向いている方向
         }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Turning"))
         {
-            // どの店の前にいるかを取得する
+            // どの店の前にいるかを取得し，その店の店員の方向へ向く
             NavMeshofCustomer_Fair2Ver mode = GetComponent<NavMeshofCustomer_Fair2Ver>();
-            
-            if (mode.mode <= 9)
-            {
-                RobotTurning(transform.position + from, clerkPos[mode.mode]);
-            }
+            if (mode.mode <= 9) RobotTurning(transform.position + from, clerkPos[mode.mode]);
 
+            // Turningから遷移しない問題，とりあえず，臨時でThinkingをtrueにしている
+            if (anim.GetBool("PickUp") == false && anim.GetBool("Thinking") == false) anim.SetBool("Thinking", true);
         }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.ToFoward"))
         {
-            // どの店の前にいるかを取得する
+            // どの店の前にいるかを取得し，その店の店員の方向から元の方向へ向く
             NavMeshofCustomer_Fair2Ver mode = GetComponent<NavMeshofCustomer_Fair2Ver>();
-            
             if (mode.mode <= 9) RobotTurning(clerkPos[mode.mode], transform.position + from);
 
             anim.SetBool("Turning", false);
-            doBehavior = 0;
-            //Debug.Log(string.Format("<color=green>ToFoward</color>"));
+            doBehavior = DEFAULT;
         }
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.PickUp"))
-        {
-            whichBehavior = PICKUP;
-        }
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Thinking"))
-        {
-            whichBehavior = THINKING;
-        }
+        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.PickUp")) { whichBehavior = PICKUP; }
+        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Thinking")) { whichBehavior = THINKING; }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.LookAround"))
         {
             timerLA += Time.deltaTime;
@@ -160,12 +166,41 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
                 RobotTurning(
                     transform.position + Quaternion.Euler(0, -20, 0) * from,
                     transform.position + from);
-                doBehavior = WALK;
+                doBehavior = 0;
             }
 
             anim.SetBool("LookAround", false);
             anim.SetBool("Turning", false);
         }
+
+        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Appreciation"))
+        {
+
+            // 舞台の方向へ向かせる
+            RobotTurning(transform.position + from, GameObject.Find("butai").transform.position);
+            // ここで，拍手・手拍子状態なら，randとかをつかって一定確率でそのアニメーションフェーズに移るようにする
+            randNum = Random.Range(0f, 1f);
+            Debug.Log("randNum = " + randNum);
+
+            if(randNum > 0.995f)
+            {
+                if      (doBehavior == 8) anim.SetBool("Handclap", true);
+                else if (doBehavior == 9) anim.SetBool("Applause", true);
+                whichBehavior = APPRECIATION;
+            }
+        }
+        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Handclap"))
+        {
+            whichBehavior = HANDCLAP;
+            anim.SetBool("Handclap", false);
+        }
+        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Applause"))
+        {
+            whichBehavior = APPLAUSE;
+            anim.SetBool("Applause", false);
+        }
+
+
 
         // 歩いているときだけ視線移動をするように
         if (whichBehavior == WALK)
@@ -183,41 +218,44 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     /// <summary>
     /// 指定された動作を行わせる
     /// </summary>
-    /// <param name="doBehavior"></param>
+    /// <param name="doBehavior">行わせたい行動の番号</param>
     private void DoBehavior(int doBehavior)
     {
         switch (doBehavior)
         {
-            case STOP:
-                anim.SetTrigger("Idle");
-                break;
             case PICKUP:
                 if (anim.GetBool("Turning") == false)
                 {
-                    //Debug.Log("Turning and pick up.");
                     anim.SetBool("Turning", true);
+                    anim.SetBool("PickUp", true);
                 }
                 else
                 {
-                    //Debug.Log("<color=green>pick up.</color>");
                     anim.SetBool("PickUp", true);
                 }
                 break;
             case THINKING:
                 if (anim.GetBool("Turning") == false)
                 {
-                    //Debug.Log("Turning and Thinking.");
                     anim.SetBool("Turning", true);
+                    anim.SetBool("Thinking", true);
                 }
                 else
                 {
-                    //Debug.Log("<color=green>Thinking.</color>");
                     anim.SetBool("Thinking", true);
                 }
                 break;
             case LOOKAROUND:
-                //Debug.Log("lookaround");
                 anim.SetBool("LookAround", true);
+                break;
+            case APPRECIATION:
+                anim.SetBool("Appreciation", true);
+                break;
+            case HANDCLAP:
+                anim.SetBool("Appreciation", true); // 一旦，Appreciation状態へ移行する
+                break;
+            case APPLAUSE:
+                anim.SetBool("Appreciation", true); // 一旦，Appreciation状態へ移行する
                 break;
             default:
                 break;
@@ -233,12 +271,14 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     void OnTriggerStay(Collider collider)
     {
 
-        // 0.5秒間隔で、ほかの客を取得
+        // TimeInterval 秒間隔で、ほかの客を取得
         if (timer < TimeInterval) return;
 
-        if (ApplyHeadBehaviour == true &&
-            whichBehavior == WALK)
+        if (ApplyHeadBehaviour == true && whichBehavior == WALK)
         {
+
+            randNum = Random.Range(0f, 1f);
+            randNumHb = Random.Range(0f, 1f);
 
             // WalkEnd は無視
             if (collider.gameObject.tag == "WalkEnd") return;
@@ -249,13 +289,18 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             // player が近くにいれば，優先的にHBが発動する
             if (VectorDistance(transform.position, player.transform.position) < 3)
             {
-                Debug.Log(transform.name + " is near the player!");
+                //Debug.Log(transform.name + " is near the player!");
                 doBehavior = (int)player.GetComponent<PlayerBehaviorText_VIVE>().whichBehavior;
+                
+                // (「買い物」概念の伝播)
+                if (hb == 4)
+                    hb = Mathf.RoundToInt(hb + randNumHb);
+                else if (hb == 5)
+                    hb = Mathf.RoundToInt(hb - randNumHb);
 
                 // タイマーを初期化
                 timer = 0;
                 return;
-
             }
 
 
@@ -293,19 +338,22 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
                 num++;
             }
 
-            randNum = Random.Range(0f, 1f);
 
             // 自身のdoBehaviorに、とるべき行動の変数を入れる
             // 行動変数を平均したものを、自身の行動変数にしている
-            // つられる行動は「4.物を買う動作」「6.周囲を見回す移動」
             if (randNum > 0.7f)
             {
-                hb = (int)Mathf.Round((float)i / num);
-                if (hb == 4 || hb == 6)
-                {
-                    //doBehavior = hb;
-                }
-                //Debug.Log("HeadBehavior == " + doBehavior);
+                hb = Mathf.RoundToInt((float)i / num);
+
+                // HBによってつられる際に，thinking→look around，look around→thinking
+                // というように，行動が変化するようにする
+                // (「買い物」概念の伝播)
+                if (hb == 4)
+                    hb = Mathf.RoundToInt(hb + randNumHb);
+                else if (hb == 5)
+                    hb = Mathf.RoundToInt(hb - randNumHb);
+
+                doBehavior = hb;
             }
 
             // タイマーを初期化

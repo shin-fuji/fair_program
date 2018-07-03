@@ -46,9 +46,6 @@ public class Pausable : MonoBehaviour
         OnPanel.SetActive(true);        // PanelMenuをtrueにする
         Time.timeScale = 0;
         pauseGame = true;
-
-        //Cursor.lockState = CursorLockMode.None;     // 標準モード
-        //Cursor.visible = true;    // カーソル表示
     }
 
     public void OnUnPause()
@@ -57,9 +54,6 @@ public class Pausable : MonoBehaviour
         OnFinishPanel.SetActive(false);       // FinishPanelをfalseにする
         Time.timeScale = 1;
         pauseGame = false;
-
-        //Cursor.lockState = CursorLockMode.Locked;   // 中央にロック
-        //Cursor.visible = false;     // カーソル非表示
     }
 
     public void OnFinish()
