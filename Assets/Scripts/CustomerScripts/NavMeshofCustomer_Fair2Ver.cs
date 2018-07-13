@@ -307,11 +307,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
             // 他の客との衝突でスピードがおかしくなって進まなくなったときは、
             // 一定時間で強制的に退場
-            if (timer_col > 45)
-            {
-                WalkerCreator.walkerList.Remove(gameObject);
-                Destroy(gameObject);
-            }
+            if (timer_col > 45) CustomerLeaves(gameObject);
         }
 
 
@@ -454,12 +450,8 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 }
                 mode = COR;
                 break;
-            // 道路の端まで来てしまえば、その歩行者を消す
             case "WalkEnd":
-                // 別のオブジェクト(Sphere)のスクリプトを参照する場合
-                // 静的変数は「クラス名.変数名」とすれば直接値の読み書きが可能
-                WalkerCreator.walkerList.Remove(gameObject);
-                Destroy(gameObject);
+                CustomerLeaves(gameObject);
                 break;
             default:
                 break;
@@ -558,6 +550,19 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         }
         // 周回するべき座標の個数をカウント
         pointsCount = points.Count;
+    }
+
+    /// <summary>
+    /// 入場客を退場させる(消す)関数
+    /// 
+    /// 別のオブジェクト(Sphere)のスクリプトを参照する場合
+    /// 静的変数は「クラス名.変数名」とすれば直接値の読み書きが可能
+    /// </summary>
+    /// <param name="customer">退場させたい入場客</param>
+    void CustomerLeaves(GameObject customer)
+    {
+        WalkerCreator.walkerList.Remove(customer);
+        Destroy(customer);
     }
 
 }

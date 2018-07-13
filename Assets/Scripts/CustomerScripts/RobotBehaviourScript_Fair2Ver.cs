@@ -8,10 +8,9 @@ using System.Collections.Generic;
 /// HeadBehaviorの制御もここで行っている
 /// 
 /// TODO：
-/// ・鑑賞（行動番号7）について，アニメコントローラのboolをいつfalseにするかを考える
-/// ・現在，拍手を行動番号9に振り分けているが，その必要があるかどうか考える．ダンス終了後に必ず拍手させるという手もある．
+/// ・鑑賞（行動番号7）について，アニメコントローラのboolをいつfalseにするかを考える→ダンスのアニメーションが終わった時点でfalseに
 /// ・手拍子のHBは，必ず伝播するようにする
-/// ・ダンス鑑賞開始後，(randNum)秒後に手拍子を始めるようにする
+/// ・ダンス鑑賞開始後，ランダムで手拍子を始めるようにする．ダンス終了後は拍手（乱数で誰かが拍手し始めるようにし，それを伝播させる）
 /// 
 /// </summary>
 public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
@@ -21,7 +20,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     Transform transform;
 
     // player 情報
-    private GameObject player; // [VRTK_SDKManager]->SteamVR->[CameraRig]
+    GameObject player; // [VRTK_SDKManager]->SteamVR->[CameraRig]
 
     Animator anim;
 
@@ -61,13 +60,10 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     // アニメーション関連の変数
     public AnimatorStateInfo animInfo;
     Vector3 from;
-
-    float randNum = 0;
-    float randNumHb = 0;
+    
 
     // HerdBehaviorを扱うための変数
     List<GameObject> otherCustomerList = new List<GameObject>();
-    int headBehavior = 0;
 
     // HerdBehavior を計算するための変数
     // TimeInterval 秒ごとに HerdBehavior を計算している
@@ -76,10 +72,12 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     float timerLA = 0;
 
     // 店員の位置リスト
-    private List<Vector3> clerkPos = new List<Vector3>();
+    List<Vector3> clerkPos = new List<Vector3>();
 
-    // 計算されたherd behavior
-    private int hb;
+    // 手拍子などの効果音
+    [SerializeField]
+    AudioClip handclapSound, applauseSound;
+    AudioSource audioSource;
 
 
 
@@ -89,6 +87,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         transform = GetComponent<Transform>();
         player = GameObject.FindGameObjectsWithTag("Player")[0];
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
         // 店員の位置を取得
         for (int i = 0; i < 10; i++)
@@ -124,7 +123,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             // LookAroundTimer
             timerLA = 0;
 
-            whichBehavior = DEFAULT;
+            whichBehavior = WALK;
             from = transform.forward;  // 今向いている方向
         }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Turning"))
@@ -143,7 +142,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             if (mode.mode <= 9) RobotTurning(clerkPos[mode.mode], transform.position + from);
 
             anim.SetBool("Turning", false);
-            doBehavior = DEFAULT;
+            doBehavior = WALK;
         }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.PickUp")) { whichBehavior = PICKUP; }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Thinking")) { whichBehavior = THINKING; }
@@ -166,7 +165,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
                 RobotTurning(
                     transform.position + Quaternion.Euler(0, -20, 0) * from,
                     transform.position + from);
-                doBehavior = 0;
+                doBehavior = WALK;
             }
 
             anim.SetBool("LookAround", false);
@@ -178,14 +177,20 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
             // 舞台の方向へ向かせる
             RobotTurning(transform.position + from, GameObject.Find("butai").transform.position);
-            // ここで，拍手・手拍子状態なら，randとかをつかって一定確率でそのアニメーションフェーズに移るようにする
-            randNum = Random.Range(0f, 1f);
-            Debug.Log("randNum = " + randNum);
 
-            if(randNum > 0.995f)
+            // ここで，拍手・手拍子状態なら，乱数をつかって一定確率でそのアニメーションフェーズに移るようにする
+            if (Random.Range(0f, 1f) > 0.995f)
             {
-                if      (doBehavior == 8) anim.SetBool("Handclap", true);
-                else if (doBehavior == 9) anim.SetBool("Applause", true);
+                if (doBehavior == HANDCLAP)
+                {
+                    anim.SetBool("Handclap", true);
+                    if (!audioSource.isPlaying) audioSource.PlayOneShot(handclapSound); Debug.Log("handclap");
+                }
+                else if (doBehavior == APPLAUSE)
+                {
+                    anim.SetBool("Applause", true);
+                    if (!audioSource.isPlaying) audioSource.PlayOneShot(applauseSound);
+                }
                 whichBehavior = APPRECIATION;
             }
         }
@@ -273,92 +278,91 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
         // TimeInterval 秒間隔で、ほかの客を取得
         if (timer < TimeInterval) return;
-
-        if (ApplyHeadBehaviour == true && whichBehavior == WALK)
+        else
         {
-
-            randNum = Random.Range(0f, 1f);
-            randNumHb = Random.Range(0f, 1f);
-
-            // WalkEnd は無視
-            if (collider.gameObject.tag == "WalkEnd") return;
-            
-            // 自身のタグを collider.gameObject.tag に設定
-            gameObject.tag = collider.gameObject.tag;
-
-            // player が近くにいれば，優先的にHBが発動する
-            if (VectorDistance(transform.position, player.transform.position) < 3)
+            if (ApplyHeadBehaviour == true && whichBehavior == WALK)
             {
-                //Debug.Log(transform.name + " is near the player!");
-                doBehavior = (int)player.GetComponent<PlayerBehaviorText_VIVE>().whichBehavior;
-                
-                // (「買い物」概念の伝播)
-                if (hb == 4)
-                    hb = Mathf.RoundToInt(hb + randNumHb);
-                else if (hb == 5)
-                    hb = Mathf.RoundToInt(hb - randNumHb);
 
-                // タイマーを初期化
-                timer = 0;
-                return;
+                // WalkEnd は無視
+                if (collider.gameObject.tag == "WalkEnd") return;
+
+                // 自身のタグを collider.gameObject.tag に設定
+                gameObject.tag = collider.gameObject.tag;
+
+                // player が近くにいれば，優先的にHBが発動する
+                if (VectorDistance(transform.position, player.transform.position) < 3)
+                {
+                    //Debug.Log(transform.name + " is near the player!");
+                    HerdBehavior((int)player.GetComponent<PlayerBehaviorText_VIVE>().whichBehavior);
+
+                    return;
+                }
+
+
+                // 他客リストの初期化
+                otherCustomerList.Clear();
+                //Debug.Log("OnTriggerStay(Collider " + collider.gameObject.tag + " )");
+
+                // 同エリアのほかの客を取得し、
+                // 「自分がいるエリアオブジェクト(SecSphere_○○)」と「自分自身」を削除
+                otherCustomerList.AddRange(GameObject.FindGameObjectsWithTag(collider.gameObject.tag));
+                otherCustomerList.Remove(collider.gameObject);
+                otherCustomerList.Remove(gameObject);
+
+
+                // 自分以外に客がいないなら終了
+                if (otherCustomerList.Count == 0) return;
+
+
+                int tmp0 = 0, tmp1 = 0, num = 0;
+
+                foreach (var customer in otherCustomerList)
+                {
+                    tmp0 = customer.GetComponent<RobotBehaviourScript_Fair2Ver>().whichBehavior;
+
+                    // 舞台袖で，手拍子か拍手をしているキャラがいれば，それを伝播させる
+                    if ((collider.gameObject.tag == "Sec_F_STA" || collider.gameObject.tag == "Sec_S_STA") &&
+                        (tmp0 == HANDCLAP || tmp0 == APPLAUSE))
+                    {
+                        HerdBehavior(tmp0);
+                        return;
+                    }
+
+                    // 他客の行動変数の総和を取る
+                    tmp1 += tmp0;
+                    //Debug.Log("customer[" + num + "] == " + customer.GetComponent<RobotBehaviourScript_FairVer>().whichBehavior);
+                    //num++;
+                }
+
+                // 行動変数を平均したものを、自身の行動変数にしている
+                if (Random.Range(0f, 1f) > 0.7f) HerdBehavior(Mathf.RoundToInt((float)tmp1 / num));
+
             }
 
-
-            // 他客リストの初期化
-            otherCustomerList.Clear();
-            //Debug.Log("OnTriggerStay(Collider " + collider.gameObject.tag + " )");
-
-            // 同エリアのほかの客を取得し、
-            // 「自分がいるエリアオブジェクト(SecSphere_○○)」と「自分自身」を削除
-            otherCustomerList.AddRange(GameObject.FindGameObjectsWithTag(collider.gameObject.tag));
-            otherCustomerList.Remove(collider.gameObject);
-            otherCustomerList.Remove(gameObject);
-            
-
-            // 自分以外に客がいないなら終了
-            if (otherCustomerList.Count == 0) return;
-
-            //Debug.Log("otherCustomerList.Count == " + otherCustomerList.Count);
-
-            //int num0 = 0;
-            //foreach (var a in otherCustomerList)
-            //{
-            //    Debug.Log("otherCustomer[" + num0 + "] = " + a);
-            //    num0++;
-            //}
-
-
-            int i = 0, num = 0;
-
-            foreach (var customer in otherCustomerList)
-            {
-                // 他客の行動変数の総和を取る
-                i += customer.GetComponent<RobotBehaviourScript_Fair2Ver>().whichBehavior;
-                //Debug.Log("customer[" + num + "] == " + customer.GetComponent<RobotBehaviourScript_FairVer>().whichBehavior);
-                num++;
-            }
-
-
-            // 自身のdoBehaviorに、とるべき行動の変数を入れる
-            // 行動変数を平均したものを、自身の行動変数にしている
-            if (randNum > 0.7f)
-            {
-                hb = Mathf.RoundToInt((float)i / num);
-
-                // HBによってつられる際に，thinking→look around，look around→thinking
-                // というように，行動が変化するようにする
-                // (「買い物」概念の伝播)
-                if (hb == 4)
-                    hb = Mathf.RoundToInt(hb + randNumHb);
-                else if (hb == 5)
-                    hb = Mathf.RoundToInt(hb - randNumHb);
-
-                doBehavior = hb;
-            }
-
-            // タイマーを初期化
-            if (timer >= TimeInterval) timer = 0;
+            if (timer > TimeInterval) timer = 0;
         }
+    }
+
+
+    /// <summary>
+    /// 行動変数を受け取り，HBの処理を行う
+    /// </summary>
+    /// <param name="hb">周囲のキャラの行動変数</param>
+    void HerdBehavior(int hb)
+    {
+        // HBによってつられる際に，thinking→pickup，pickup→thinking
+        // というように，行動が変化するようにする
+        // (「買い物」概念の伝播)
+        float randNumHb = Random.Range(0f, 1f);
+        if (hb == PICKUP)
+            hb = Mathf.RoundToInt(hb + randNumHb);
+        else if (hb == THINKING)
+            hb = Mathf.RoundToInt(hb - randNumHb);
+
+        doBehavior = hb;
+
+        // タイマーを初期化
+        timer = 0;
     }
 
 
