@@ -13,7 +13,7 @@ using System.Text; //Encoding
 public class ButtonBehavSaveScript : MonoBehaviour
 {
     [SerializeField]
-    private GameObject playerBehavTextObj;
+    private PlayerBehaviorText_VIVE pbt_VIVE;
 
 
     void Start()
@@ -26,9 +26,9 @@ public class ButtonBehavSaveScript : MonoBehaviour
     {
         // 別のオブジェクト(Player)のスクリプトを参照
         //PlayerBehaviorText_Fair2Ver playerBehavText = playerBehavTextObj.GetComponent<PlayerBehaviorText_Fair2Ver>();
-        PlayerBehaviorText_VIVE playerBehavText = playerBehavTextObj.GetComponent<PlayerBehaviorText_VIVE>();
+        //PlayerBehaviorText_VIVE playerBehavText = playerBehavTextObj.GetComponent<PlayerBehaviorText_VIVE>();
 
-        SaveBehav(playerBehavText.playerBehavList);
+        SaveBehav(pbt_VIVE.playerBehavList);
 
         WalkerCreator.walkerList.Clear();
         Pausable.pauseGame = false;
@@ -63,7 +63,7 @@ public class ButtonBehavSaveScript : MonoBehaviour
         //    sw.Write(playerBehavList[i]);
         //}
 
-
+        Debug.Log("<color=red>BehavList is Saved.</color> : " + playerBehavList);
 
         foreach (string behav in playerBehavList)
         {

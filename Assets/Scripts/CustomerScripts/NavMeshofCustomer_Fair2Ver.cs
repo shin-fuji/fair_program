@@ -146,20 +146,6 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /* デモの時だけ外す
-        if (Vector3.Distance(this.transform.position, player.transform.position) < 2)
-        {
-            agent.speed = 0.05f;
-            anim.speed = 0.6f;
-        }
-        else
-        {
-            agent.speed = 1f;
-            anim.speed = 0.75f;
-        }
-        */
-
-        //Debug.Log(agent.speed);
 
         animInfo = GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
 
@@ -184,105 +170,54 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             // ランダムに行動を決める
             if (readFileOrNot == false)
             {
-                // 歩くルートを決める乱数を生成
-                turningRand = Random.Range(0f, 1f);
-
-                // 一定時間経過で、出口(WalkEnd)まで自動で歩いてもらう
-                if (timer > 240)
-                {
-                    if (turningRand > 0.5f)
-                        agent.SetDestination(points[RI_EXIT].position);
-                    else
-                        agent.SetDestination(points[LO_EXIT].position);
-                    return;
-                }
-
 
                 switch (mode)
                 {
                     case WAT:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[TA].position);
-                        else
-                            agent.SetDestination(points[STA_S].position);
+                        SetDestination(timer, TA, STA_S);
+                        //if (turningRand < 0.5f)
+                        //    agent.SetDestination(points[TA].position);
+                        //else
+                        //    agent.SetDestination(points[STA_S].position);
                         break;
                     case TA:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[WAT].position);
-                        else
-                            agent.SetDestination(points[SHA].position);
+                        SetDestination(timer, WAT, SHA);
                         break;
                     case SHA:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[TA].position);
-                        else
-                            agent.SetDestination(points[YA].position);
+                        SetDestination(timer, TA, YA);
                         break;
                     case YA:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[SHA].position);
-                        else
-                            agent.SetDestination(points[KAI].position);
+                        SetDestination(timer, SHA, KAI);
                         break;
                     case KAI:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[YA].position);
-                        else
-                            agent.SetDestination(points[WAN].position);
+                        SetDestination(timer, YA, WAN);
                         break;
                     case WAN:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[KAI].position);
-                        else
-                            agent.SetDestination(points[YO].position);
+                        SetDestination(timer, KAI, YO);
                         break;
                     case YO:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[WAN].position);
-                        else
-                            agent.SetDestination(points[KI].position);
+                        SetDestination(timer, WAN, KI);
                         break;
                     case KI:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[YO].position);
-                        else
-                            agent.SetDestination(points[KAK].position);
+                        SetDestination(timer, YO, KAK);
                         break;
                     case KAK:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[KI].position);
-                        else
-                            agent.SetDestination(points[RI].position);
+                        SetDestination(timer, KI, RI);
                         break;
                     case RI:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[KAK].position);
-                        else
-                            agent.SetDestination(points[FAN_1].position);
+                        SetDestination(timer, KAK, FAN_1);
                         break;
                     case FAN_1:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[RI].position);
-                        else
-                            agent.SetDestination(points[FAN_2].position);
+                        SetDestination(timer, RI, FAN_2);
                         break;
                     case FAN_2:
-                        if (turningRand < 0.5f)
-                            agent.SetDestination(points[FAN_1].position);
-                        else
-                            agent.SetDestination(points[STA_F].position);
+                        SetDestination(timer, FAN_1, STA_F);
                         break;
                     case STA_F:
-                        if (turningRand < 0.2f)
-                            agent.SetDestination(points[STA_S].position);
-                        else
-                            agent.SetDestination(points[FAN_1].position);
+                        SetDestination(timer, STA_S, FAN_1);
                         break;
                     case STA_S:
-                        if (turningRand < 0.2f)
-                            agent.SetDestination(points[STA_F].position);
-                        else
-                            agent.SetDestination(points[TA].position);
+                        SetDestination(timer, STA_F, TA);
                         break;
                     default:
                         break;
@@ -563,6 +498,44 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     {
         WalkerCreator.walkerList.Remove(customer);
         Destroy(customer);
+    }
+
+    /// <summary>
+    /// 動き回る入場客に対して，ランダムに行き先を設定する関数
+    /// </summary>
+    /// <param name="timer">タイマー</param>
+    /// <param name="DES0">移動先を示す定数0</param>
+    /// <param name="DES1">移動先を示す定数1</param>
+    void SetDestination(float timer, int DES0, int DES1)
+    {
+        // 歩くルートを決める乱数を生成
+        turningRand = Random.Range(0f, 1f);
+
+        // 一定時間経過で、出口(WalkEnd)まで自動で歩いてもらう
+        if (timer > 240)
+        {
+            if (turningRand > 0.5f)
+                agent.SetDestination(points[RI_EXIT].position);
+            else
+                agent.SetDestination(points[LO_EXIT].position);
+            return;
+        }
+
+
+        if (DES0 == STA_F || DES0 == STA_S)
+        {
+            if (turningRand < 0.2f)
+                agent.SetDestination(points[DES0].position);
+            else
+                agent.SetDestination(points[DES1].position);
+        }
+        else
+        {
+            if (turningRand < 0.5f)
+                agent.SetDestination(points[DES0].position);
+            else
+                agent.SetDestination(points[DES1].position);
+        }
     }
 
 }
