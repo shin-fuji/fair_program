@@ -93,6 +93,7 @@ public class PlayerBehaviorText_VIVE : MonoBehaviour
     {
         Player = GameObject.Find("Camera (eye)").transform;
         playerBehavList.Add(((int)WhichBehavior.DEFAULT).ToString());
+        playerBehavList.Add(",");
     }
 
 
@@ -101,48 +102,11 @@ public class PlayerBehaviorText_VIVE : MonoBehaviour
     void Update()
     {
 
-        ShowListContentsInTheDebugLog(playerBehavList);
+        //playerBehavList.ShowListContentsInTheDebugLog();
 
         // ポーズ画面でなければ
         if (Pausable.pauseGame == false)
         {
-            //walkOrNot = IsWalking(Player.position, LastPlayerPos);
-
-            // 1秒以上停止していたらwhichBehavior = STOPに
-            //if (walkOrNot == true)
-            //{
-            //    whichBehavior = WhichBehavior.WALK;
-            //    time = 0;
-            //}
-            //else if (walkOrNot == false)
-            //{
-            //    time += Time.deltaTime;
-            //    if (time > 1.0f)
-            //    {
-            //        whichBehavior = WhichBehavior.STOP;
-            //        time = 0;
-            //    }
-            //}
-
-            // その他の細かい動作は
-            // キー入力で判定する
-            //if (Input.GetKey(KeyCode.Alpha4))
-            //{
-            //    Debug.Log("Alpha4(PICKUP) is pushed.");
-            //    whichBehavior = WhichBehavior.PICKUP;
-            //}
-            //else if (Input.GetKeyDown(KeyCode.Alpha5))
-            //{
-            //    Debug.Log("Alpha5(THINKING) is pushed.");
-            //    whichBehavior = WhichBehavior.THINKING;
-            //}
-            //else if (Input.GetKeyDown(KeyCode.Alpha6))
-            //{
-            //    Debug.Log("Alpha6(LOOKAROUND) is pushed.");
-            //    whichBehavior = WhichBehavior.LOOKAROUND;
-            //}
-
-
 
             // 行動が変わるごとに毎に行動記号を書き込んでいく
             // whichBehavior は BehaviourButton.cs にて操作している
@@ -151,10 +115,14 @@ public class PlayerBehaviorText_VIVE : MonoBehaviour
             {
                 if (lastBehav == WhichBehavior.DEFAULT)
                 {
-                    playerBehavList.RemoveAt(playerBehavList.Count - 1);
+                    // 記号列末尾の「0,」を消す
+                    int leng = playerBehavList.Count;
+                    playerBehavList.RemoveAt(leng - 1);
+                    playerBehavList.RemoveAt(leng - 2);
                 }
                 //Debug.Log("whichBehav was changed from " + lastBehav + " to " + whichBehavior);
                 playerBehavList.Add(((int)whichBehavior).ToString());
+                playerBehavList.Add(",");
 
 
             }
@@ -173,12 +141,7 @@ public class PlayerBehaviorText_VIVE : MonoBehaviour
     /// <param name="collider"></param>
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.tag == "Sec_WAT")
-        {
-            //playerBehavList.Add(WAT);
-            //playerBehavList.Add(((int)WhichBehavior.DEFAULT).ToString());
-            MoveTheArea(WAT);
-        }
+        if (collider.gameObject.tag == "Sec_WAT") MoveTheArea(WAT);
         else if (collider.gameObject.tag == "Sec_TA") MoveTheArea(TA);
         else if (collider.gameObject.tag == "Sec_SHA") MoveTheArea(SHA);
         else if (collider.gameObject.tag == "Sec_YA") MoveTheArea(YA);
@@ -230,24 +193,10 @@ public class PlayerBehaviorText_VIVE : MonoBehaviour
     private void MoveTheArea(string AREA)
     {
         playerBehavList.Add(AREA);
+        playerBehavList.Add(",");
         playerBehavList.Add(((int)WhichBehavior.DEFAULT).ToString());
+        playerBehavList.Add(",");
         lastBehav = WhichBehavior.DEFAULT;
         whichBehavior = WhichBehavior.DEFAULT;
-    }
-
-
-    public void ShowListContentsInTheDebugLog<T>(List<T> list)
-    {
-        string log = "";
-
-        foreach (var content in list.Select((val, idx) => new { val, idx }))
-        {
-            if (content.idx == list.Count - 1)
-                log += content.val.ToString();
-            else
-                log += content.val.ToString() + ", ";
-        }
-
-        Debug.Log(log);
     }
 }

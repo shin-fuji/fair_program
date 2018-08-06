@@ -38,7 +38,7 @@ public class BehaviourScriptReader : MonoBehaviour
 
         // FileReadTest.txtファイルを読み込む
         //FileInfo fi = new FileInfo(Application.dataPath + "/HerdBehav_test.txt");
-        FileInfo fi = new FileInfo(Application.dataPath + "/behavior_array_demo.txt");
+        FileInfo fi = new FileInfo(Application.dataPath + "/behavior_array_VIVE.txt");
         try
         {
             // 一行毎読み込み

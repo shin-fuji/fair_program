@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// This script manages behaviours of the Robot(ex, which the robot is walking or not).
@@ -52,12 +53,12 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
               APPRECIATION = 7,
               HANDCLAP = 8,
               APPLAUSE = 9;
-    public int whichBehavior = WALK;
 
-    // 特定の行動を起こすための変数
+    public int whichBehavior = WALK;
     public int doBehavior;
 
     // アニメーション関連の変数
+    NavMeshofCustomer_Fair2Ver nmc;
     public AnimatorStateInfo animInfo;
     Vector3 from;
     
@@ -68,8 +69,6 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     // HerdBehavior を計算するための変数
     // TimeInterval 秒ごとに HerdBehavior を計算している
     float timer = 0, TimeInterval = 0.5f;
-    // 周囲を見渡す動作を行うのに必要なtime変数
-    float timerLA = 0;
 
     // 店員の位置リスト
     List<Vector3> clerkPos = new List<Vector3>();
@@ -90,11 +89,15 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         // 店員の位置を取得
-        for (int i = 0; i < 10; i++)
+        var clerks = GameObject.FindGameObjectsWithTag("Clerk").OrderBy(x => x.name);
+        foreach (var clerk in clerks)
         {
-            clerkPos.Add(GameObject.Find("Clerks").transform.Find("Clerk" + i).transform.position);
+            clerkPos.Add(clerk.transform.position);
         }
-        
+
+        nmc = GetComponent<NavMeshofCustomer_Fair2Ver>();
+        clerkPos.ShowListContentsInTheDebugLog();
+
         //Debug.Log("ApplyHeadBehaviour is " + ApplyHeadBehaviour);
     }
 
@@ -110,18 +113,16 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         animInfo = GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
 
         // doBehaviour 変数に従って行動する
-        DoBehavior(doBehavior);
+        DoBehavior(ref doBehavior);
 
-
+        
 
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Walk"))
         {
             // アニメーション遷移のタイミングの関係でPickUp, Thinkingの初期化はここで行う
-            anim.SetBool("PickUp", false);
-            anim.SetBool("Thinking", false);
-
-            // LookAroundTimer
-            timerLA = 0;
+            //anim.SetBool("PickUp", false);
+            //anim.SetBool("Thinking", false);
+            
 
             whichBehavior = WALK;
             from = transform.forward;  // 今向いている方向
@@ -129,8 +130,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Turning"))
         {
             // どの店の前にいるかを取得し，その店の店員の方向へ向く
-            NavMeshofCustomer_Fair2Ver mode = GetComponent<NavMeshofCustomer_Fair2Ver>();
-            if (mode.mode <= 9) RobotTurning(transform.position + from, clerkPos[mode.mode]);
+            if (nmc.mode <= clerkPos.Count - 1) RobotTurning(transform.position + from, clerkPos[nmc.mode]);
 
             // Turningから遷移しない問題，とりあえず，臨時でThinkingをtrueにしている
             if (anim.GetBool("PickUp") == false && anim.GetBool("Thinking") == false) anim.SetBool("Thinking", true);
@@ -138,36 +138,18 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.ToFoward"))
         {
             // どの店の前にいるかを取得し，その店の店員の方向から元の方向へ向く
-            NavMeshofCustomer_Fair2Ver mode = GetComponent<NavMeshofCustomer_Fair2Ver>();
-            if (mode.mode <= 9) RobotTurning(clerkPos[mode.mode], transform.position + from);
+            if (nmc.mode <= clerkPos.Count - 1) RobotTurning(clerkPos[nmc.mode], transform.position + from);
 
             anim.SetBool("Turning", false);
-            doBehavior = WALK;
+            anim.SetBool("PickUp", false);
+            anim.SetBool("Thinking", false);
+            //doBehavior = WALK;
         }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.PickUp")) { whichBehavior = PICKUP; }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Thinking")) { whichBehavior = THINKING; }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.LookAround"))
         {
-            timerLA += Time.deltaTime;
-            if (timerLA > 0.2f && timerLA < 1.5f)
-            {
-                whichBehavior = LOOKAROUND;
-                RobotTurning(
-                    transform.position + from,
-                    transform.position + Quaternion.Euler(0, 20, 0) * from);
-            }
-            else if (timerLA < 4)
-                RobotTurning(
-                    transform.position + Quaternion.Euler(0, 20, 0) * from,
-                    transform.position + Quaternion.Euler(0, -20, 0) * from);
-            else if (timerLA < 6)
-            {
-                RobotTurning(
-                    transform.position + Quaternion.Euler(0, -20, 0) * from,
-                    transform.position + from);
-                doBehavior = WALK;
-            }
-
+            whichBehavior = LOOKAROUND;
             anim.SetBool("LookAround", false);
             anim.SetBool("Turning", false);
         }
@@ -179,30 +161,38 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             RobotTurning(transform.position + from, GameObject.Find("butai").transform.position);
 
             // ここで，拍手・手拍子状態なら，乱数をつかって一定確率でそのアニメーションフェーズに移るようにする
-            if (Random.Range(0f, 1f) > 0.995f)
-            {
-                if (doBehavior == HANDCLAP)
-                {
-                    anim.SetBool("Handclap", true);
-                    if (!audioSource.isPlaying) audioSource.PlayOneShot(handclapSound); Debug.Log("handclap");
-                }
-                else if (doBehavior == APPLAUSE)
-                {
-                    anim.SetBool("Applause", true);
-                    if (!audioSource.isPlaying) audioSource.PlayOneShot(applauseSound);
-                }
-                whichBehavior = APPRECIATION;
-            }
+            //if (Random.Range(0f, 1f) > 0.995f)
+            //{
+            //    if (doBehavior == HANDCLAP)
+            //    {
+            //        anim.SetBool("Handclap", true);
+            //        if (!audioSource.isPlaying) audioSource.PlayOneShot(handclapSound); Debug.Log("handclap");
+            //    }
+            //    else if (doBehavior == APPLAUSE)
+            //    {
+            //        anim.SetBool("Applause", true);
+            //        if (!audioSource.isPlaying) audioSource.PlayOneShot(applauseSound);
+            //    }
+
+            //    whichBehavior = APPRECIATION;
+            //}
+
+            whichBehavior = APPRECIATION;
+
+
         }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Handclap"))
         {
+            if (!audioSource.isPlaying) audioSource.PlayOneShot(handclapSound);
             whichBehavior = HANDCLAP;
             anim.SetBool("Handclap", false);
         }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Applause"))
         {
+            if (!audioSource.isPlaying) audioSource.PlayOneShot(applauseSound);
             whichBehavior = APPLAUSE;
             anim.SetBool("Applause", false);
+            //anim.SetBool("Appreciation", true);
         }
 
 
@@ -224,7 +214,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     /// 指定された動作を行わせる
     /// </summary>
     /// <param name="doBehavior">行わせたい行動の番号</param>
-    private void DoBehavior(int doBehavior)
+    private void DoBehavior(ref int doBehavior)
     {
         switch (doBehavior)
         {
@@ -258,13 +248,18 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
                 break;
             case HANDCLAP:
                 anim.SetBool("Appreciation", true); // 一旦，Appreciation状態へ移行する
+                anim.SetBool("Handclap", true);
                 break;
             case APPLAUSE:
                 anim.SetBool("Appreciation", true); // 一旦，Appreciation状態へ移行する
+                anim.SetBool("Applause", true);
                 break;
             default:
                 break;
         }
+
+        // 行動を変化させたあと，一旦 doBehavior を DEFAULT に戻す
+        doBehavior = DEFAULT;
     }
 
 
@@ -393,7 +388,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     /// </summary>
     /// <param name="v1">移動後の位置</param>
     /// <param name="v2">移動前の位置</param>
-    /// <returns></returns>
+    /// <returns>移動前後の位置間の距離</returns>
     private float VectorDistance(Vector3 v1, Vector3 v2)
     {
         return (float)System.Math.Sqrt(System.Math.Pow(v1.x - v2.x, 2) + System.Math.Pow(v1.z - v2.z, 2));

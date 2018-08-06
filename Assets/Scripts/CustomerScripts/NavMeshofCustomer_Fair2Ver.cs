@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
+using System.Text.RegularExpressions;
+
+using MyCommonConst;
 
 /// <summary>
 /// フィールド上(NavMesh)での客の動作を制御するためのスクリプト
@@ -19,72 +22,34 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
     private Animator anim;
 
-    // 行動記号列を読み込むか
-    // WalkerCreator.cs から bool 値が渡される
-    public bool readFileOrNot;
-    // 読み込んだ行動記号列と
-    // それを扱う配列群
-    public string behavLine;
-    string[] behavSymbols; string behav;
-    string[] areaSymbols;
-    char[] SPLIT_AREA = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q' };
-    char[] SPLIT_BEHAV = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    public bool readFileOrNot;  // 行動記号列を読み込むか否か．WalkerCreator.cs から bool 値が渡される
+    public string behavLine;    // 読み込んだ行動記号列と，それを扱う配列群
+    string[] behavSymbols0;
+    List<List<string>> behavSymbolList = new List<List<string>>();
+    List<string> behavSymbols = new List<string>();
+    List<string> areaSymbolList = new List<string>();
     int pointsIndex = 0;
     int pointsIndexRem;
     int pointsCount;
     int POINT_NUM = 17;
 
     bool walkerOrNot = false;
-    
 
-    /// <summary>
-    /// 客が現在どこにいるかなどを示す定数
-    /// 0 : わたあめ屋(WAT)
-    /// 1 : たこ焼き屋(TA)
-    /// 2 : 射的(SHA)
-    /// 3 : 焼きそば屋(YA)
-    /// 4 : 海鮮焼き屋(KAI)
-    /// 5 : 輪投げ(WAN)
-    /// 6 : ヨーヨー釣り(YO)
-    /// 7 : 金魚すくい(KI)
-    /// 8 : かき氷屋(KAK)
-    /// 9 : リンゴ飴屋(RI)
-    /// 10: ファンタジー屋台1(FAN_1)
-    /// 11: ファンタジー屋台2(FAN_2)
-    /// 12: 曲がり角(COR)
-    /// 13: 舞台前(STA_F)
-    /// 14: 舞台横(STA_S)
-    /// 15: 右側出口(RI_EXIT)
-    /// 16: 下側出口(LO_EXIT)
-    /// </summary>
+
     public int mode = 9;
-    const int
-        WAT = 0, TA = 1, SHA = 2, YA = 3, KAI = 4,
-        WAN = 5, YO = 6, KI = 7, KAK = 8, RI = 9,
-        FAN_1 = 10, FAN_2 = 11, 
-        COR = 12, STA_F = 13, STA_S = 14,
-        RI_EXIT = 15, LO_EXIT = 16;
-    // Inspector上で自身とぶつかったエリアのタグを表示
-    [SerializeField]
-    new string tag;
-
-    // 特定の行動を、1エリアで何回も繰り返し行わないようにするための変数
-    bool doSpecificBehavior = false;
+    
+    
+    bool doSpecificBehavior = false;    // 特定の行動を、1エリアで何回も繰り返し行わないようにするための変数
     float randNum;
-    // 「head behaviourで動作が生じるのは、1エリアにつき1回まで」を実現する変数
-    //public bool herdBehavLim;
+    
+    //public bool herdBehavLim;           // 「head behaviourで動作が生じるのは、1エリアにつき1回まで」を実現する変数
 
-    // 客の移動に必要な乱数
-    float turningRand;
+    float turningRand;  // 客の移動に必要な乱数
+    float timer = 0;    // 一定時間周回すると、自動で退場してもらう。その時間をカウントする変数
 
-    // 一定時間周回すると、自動で退場してもらう。その時間をカウントする変数
-    float timer = 0;
-    float timer_col = 0;
+    AnimatorStateInfo animInfo; // lookaroundのための変数
 
-    // lookaroundのためだけの変数
-    AnimatorStateInfo animInfo;
-
-    private RobotBehaviourScript_Fair2Ver r;
+    RobotBehaviourScript_Fair2Ver r;
 
     // Use this for initialization
     void Start()
@@ -101,10 +66,8 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         // ファイルを読まずにランダムに歩かせる場合
         if (readFileOrNot == false)
         {
-            // ただの歩行者か、店の前をうろうろするかを決める
-            randNum = Random.Range(0f, 1f);
 
-            if (randNum < 0.5f)
+            if (Random.Range(0f, 1f) < 0.5f)
             // 店の前をうろうろする
             {
                 // point の個数だけループを回して SetDestination に登録する
@@ -124,17 +87,18 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         // ファイルを読んで行動記号列に従って歩かせるとき
         else
         {
-            // behavLineを「動作記号列だけの配列」「エリア記号だけの配列」に分ける
-            // Splitの性質から
-            //   behavSymbols[0] = (空), [1] = 121...
-            //   areaSymbols[0] = K, [1] = ... , ... , [n] = 
-            // のように格納される
-            behavSymbols = behavLine.Split(SPLIT_AREA);
-            areaSymbols = behavLine.Split(SPLIT_BEHAV, System.StringSplitOptions.RemoveEmptyEntries);
+            // 配列，リストは勝手に参照渡しになるわけではない
+            SplitBehavLine(behavLine, ref behavSymbolList, ref areaSymbolList); 
+            //foreach (var behavSymbols in behavSymbolList.Select((v, i) => new { v, i }))
+            //{
+            //    Debug.Log(behavSymbols.i + "番目の行動記号列：");
+            //    behavSymbols.v.ShowListContentsInTheDebugLog();
+            //}
+            //areaSymbolList.ShowListContentsInTheDebugLog();
 
             // エリア記号をcustomerの歩行ルートにセットする
-            FromAreaSymbolsToPoints(areaSymbols);
-            //Debug.Log("points[] num = " + pointsCount);
+            FromAreaSymbolsToPoints(areaSymbolList);
+
             agent.SetDestination(points[0].position);
 
         }
@@ -151,7 +115,6 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
         // タイマー
         timer += Time.deltaTime;
-        timer_col += Time.deltaTime;
 
         SetAnim();
 
@@ -173,51 +136,51 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
                 switch (mode)
                 {
-                    case WAT:
-                        SetDestination(timer, TA, STA_S);
+                    case MyConst.WAT:
+                        SetDestination(timer, MyConst.TA, MyConst.STA_S);
                         //if (turningRand < 0.5f)
                         //    agent.SetDestination(points[TA].position);
                         //else
                         //    agent.SetDestination(points[STA_S].position);
                         break;
-                    case TA:
-                        SetDestination(timer, WAT, SHA);
+                    case MyConst.TA:
+                        SetDestination(timer, MyConst.WAT, MyConst.SHA);
                         break;
-                    case SHA:
-                        SetDestination(timer, TA, YA);
+                    case MyConst.SHA:
+                        SetDestination(timer, MyConst.TA, MyConst.YA);
                         break;
-                    case YA:
-                        SetDestination(timer, SHA, KAI);
+                    case MyConst.YA:
+                        SetDestination(timer, MyConst.SHA, MyConst.KAI);
                         break;
-                    case KAI:
-                        SetDestination(timer, YA, WAN);
+                    case MyConst.KAI:
+                        SetDestination(timer, MyConst.YA, MyConst.WAN);
                         break;
-                    case WAN:
-                        SetDestination(timer, KAI, YO);
+                    case MyConst.WAN:
+                        SetDestination(timer, MyConst.KAI, MyConst.YO);
                         break;
-                    case YO:
-                        SetDestination(timer, WAN, KI);
+                    case MyConst.YO:
+                        SetDestination(timer, MyConst.WAN, MyConst.KI);
                         break;
-                    case KI:
-                        SetDestination(timer, YO, KAK);
+                    case MyConst.KI:
+                        SetDestination(timer, MyConst.YO, MyConst.KAK);
                         break;
-                    case KAK:
-                        SetDestination(timer, KI, RI);
+                    case MyConst.KAK:
+                        SetDestination(timer, MyConst.KI, MyConst.RI);
                         break;
-                    case RI:
-                        SetDestination(timer, KAK, FAN_1);
+                    case MyConst.RI:
+                        SetDestination(timer, MyConst.KAK, MyConst.FAN_1);
                         break;
-                    case FAN_1:
-                        SetDestination(timer, RI, FAN_2);
+                    case MyConst.FAN_1:
+                        SetDestination(timer, MyConst.RI, MyConst.FAN_2);
                         break;
-                    case FAN_2:
-                        SetDestination(timer, FAN_1, STA_F);
+                    case MyConst.FAN_2:
+                        SetDestination(timer, MyConst.FAN_1, MyConst.STA_F);
                         break;
-                    case STA_F:
-                        SetDestination(timer, STA_S, FAN_1);
+                    case MyConst.STA_F:
+                        SetDestination(timer, MyConst.STA_S, MyConst.FAN_1);
                         break;
-                    case STA_S:
-                        SetDestination(timer, STA_F, TA);
+                    case MyConst.STA_S:
+                        SetDestination(timer, MyConst.STA_F, MyConst.TA);
                         break;
                     default:
                         break;
@@ -226,23 +189,21 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             else
             {
                 // 行動記号列ファイルを読み込んでいるなら
-                // areaSymbolsの順番に各エリアを周回する
+                // areaSymbols0の順番に各エリアを周回する
                 pointsIndexRem = pointsIndex % pointsCount;
                 agent.SetDestination(points[pointsIndexRem].position);
+                Debug.Log("次の目的地：" + areaSymbolList[pointsIndexRem]);
 
                 pointsIndex = (pointsIndex + 1) % pointsCount;
-
-
-                behav = behavSymbols[pointsIndexRem];
+                
+                behavSymbols = behavSymbolList[pointsIndexRem];
+                Debug.Log("次の行動記号列：");
+                behavSymbols.ShowListContentsInTheDebugLog();
 
                 // doSpecificBehavior初期化
                 // 特定の行動記号がなければ下の if 節で即座に false になる
                 doSpecificBehavior = true;
             }
-
-            // 他の客との衝突でスピードがおかしくなって進まなくなったときは、
-            // 一定時間で強制的に退場
-            if (timer_col > 45) CustomerLeaves(gameObject);
         }
 
 
@@ -250,54 +211,67 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         if (readFileOrNot == true && doSpecificBehavior == true)
         {
 
-            // Stop 記号がある場合
-            //if (behav.Contains("2"))
+            //// Stop 記号がある場合
+            ////if (behav.Contains("2"))
+            ////{
+            ////    r.doBehavior = 2;
+            ////    doSpecificBehavior = false;
+            ////}
+            //// PickUp 記号がある場合
+            //if (behav.Contains("4"))
             //{
-            //    r.doBehavior = 2;
+            //    r.doBehavior = 4;
             //    doSpecificBehavior = false;
             //}
-            // PickUp 記号がある場合
-            if (behav.Contains("4"))
-            {
-                r.doBehavior = 4;
-                doSpecificBehavior = false;
-            }
-            // Thinking 記号がある場合
-            if (behav.Contains("5"))
-            {
-                r.doBehavior = 5;
-                doSpecificBehavior = false;
-            }
-            // lookaround 記号がある場合
-            if (behav.Contains("6"))
-            {
-                r.doBehavior = 6;
-                doSpecificBehavior = false;
-            }
-            // appreciation 記号がある場合
-            if (behav.Contains("7"))
-            {
-                r.doBehavior = 7;
+            //// Thinking 記号がある場合
+            //if (behav.Contains("5"))
+            //{
+            //    r.doBehavior = 5;
+            //    doSpecificBehavior = false;
+            //}
+            //// lookaround 記号がある場合
+            //if (behav.Contains("6"))
+            //{
+            //    r.doBehavior = 6;
+            //    doSpecificBehavior = false;
+            //}
+            //// appreciation 記号がある場合
+            //if (behav.Contains("7"))
+            //{
+            //    r.doBehavior = 7;
 
-                // appreciation + handclap 記号がある場合
-                if (behav.Contains("8"))
-                {
-                    r.doBehavior = 8;
-                }
-                // appreciation + applause 記号がある場合
-                if (behav.Contains("9"))
-                {
-                    r.doBehavior = 9;
-                }
+            //    // appreciation + handclap 記号がある場合
+            //    if (behav.Contains("8"))
+            //    {
+            //        r.doBehavior = 8;
+            //    }
+            //    // appreciation + applause 記号がある場合
+            //    if (behav.Contains("9"))
+            //    {
+            //        r.doBehavior = 9;
+            //    }
 
-                doSpecificBehavior = false;
-            }
-            else
-            {
-                // 特定の行動記号がなければ、
-                // 次のエリアへ移動するまでこの if 節は実行しない
-                doSpecificBehavior = false;
-            }
+            //    doSpecificBehavior = false;
+            //}
+            //else
+            //{
+            //    // 特定の行動記号がなければ、
+            //    // 次のエリアへ移動するまでこの if 節は実行しない
+            //    doSpecificBehavior = false;
+            //}
+            
+
+            // この状態だと，エージェントが行動を映す前に一瞬でループが回ってしまい，
+            // リスト内の行動をすべて行うことができない
+            // r.doBehaviorに代入した後，その行動が終わるまで次の値を代入しないようにしたい
+            // 行動が終わるまで，ループを遅延する
+            // →行動が終わったかをどう判断するか，ループをどう遅延させるか
+            // →コルーチン内でifを用いることにより1秒ごとに確かめ，動作が終了していると分かればforeachを回す
+            StartCoroutine(IsBehaviorDone(behavSymbols));
+
+            // 特定の行動記号がなければ、
+            // 次のエリアへ移動するまでこの if 節は実行しない
+            doSpecificBehavior = false;
         }
 
         if (agent.pathStatus != NavMeshPathStatus.PathInvalid)
@@ -321,10 +295,8 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
     /// <param name="collider"></param>
     void OnTriggerEnter(Collider collider)
     {
-        tag = collider.tag;
-
-        // timer_col を初期化
-        timer_col = 0;
+        string tag = collider.tag;
+        
         // herdBehavLim を初期化
         //herdBehavLim = true;
 
@@ -332,46 +304,46 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         switch (tag)
         {
             case "Sec_WAT":
-                mode = WAT;
+                mode = MyConst.WAT;
                 break;
             case "Sec_TA":
-                mode = TA;
+                mode = MyConst.TA;
                 break;
             case "Sec_SHA":
-                mode = SHA;
+                mode = MyConst.SHA;
                 break;
             case "Sec_YA":
-                mode = YA;
+                mode = MyConst.YA;
                 break;
             case "Sec_KAI":
-                mode = KAI;
+                mode = MyConst.KAI;
                 break;
             case "Sec_WAN":
-                mode = WAN;
+                mode = MyConst.WAN;
                 break;
             case "Sec_YO":
-                mode = YO;
+                mode = MyConst.YO;
                 break;
             case "Sec_KI":
-                mode = KI;
+                mode = MyConst.KI;
                 break;
             case "Sec_KAK":
-                mode = KAK;
+                mode = MyConst.KAK;
                 break;
             case "Sec_RI":
-                mode = RI;
+                mode = MyConst.RI;
                 break;
             case "Sec_FAN_1":
-                mode = FAN_1;
+                mode = MyConst.FAN_1;
                 break;
             case "Sec_FAN_2":
-                mode = FAN_2;
+                mode = MyConst.FAN_2;
                 break;
             case "Sec_F_STA":
-                mode = STA_F;
+                mode = MyConst.STA_F;
                 break;
             case "Sec_S_STA":
-                mode = STA_S;
+                mode = MyConst.STA_S;
                 break;
             case "Sec_COR":
                 // もしただの歩行者で左方向に歩いていれば、CORで下方向に転回して出口へ
@@ -379,11 +351,11 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 if (walkerOrNot)
                 {
                     if(Vector3.Angle(transform.forward, new Vector3(1,0,0)) < 45)
-                        agent.SetDestination(GameObject.Find("SecSphere").transform.Find("point" + LO_EXIT).position);
+                        agent.SetDestination(GameObject.Find("SecSphere").transform.Find("point" + MyConst.LO_EXIT).position);
                     else
-                        agent.SetDestination(GameObject.Find("SecSphere").transform.Find("point" + RI_EXIT).position);
+                        agent.SetDestination(GameObject.Find("SecSphere").transform.Find("point" + MyConst.RI_EXIT).position);
                 }
-                mode = COR;
+                mode = MyConst.COR;
                 break;
             case "WalkEnd":
                 CustomerLeaves(gameObject);
@@ -421,9 +393,9 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         }
     }
 
-    void FromAreaSymbolsToPoints(string[] areaSymbols)
+    void FromAreaSymbolsToPoints(List<string> areaSymbolList)
     {
-        foreach (var areaSymbol in areaSymbols)
+        foreach (var areaSymbol in areaSymbolList)
         {
             switch (areaSymbol)
             {
@@ -515,14 +487,14 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         if (timer > 240)
         {
             if (turningRand > 0.5f)
-                agent.SetDestination(points[RI_EXIT].position);
+                agent.SetDestination(points[MyConst.RI_EXIT].position);
             else
-                agent.SetDestination(points[LO_EXIT].position);
+                agent.SetDestination(points[MyConst.LO_EXIT].position);
             return;
         }
 
 
-        if (DES0 == STA_F || DES0 == STA_S)
+        if (DES0 == MyConst.STA_F || DES0 == MyConst.STA_S)
         {
             if (turningRand < 0.2f)
                 agent.SetDestination(points[DES0].position);
@@ -535,6 +507,104 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 agent.SetDestination(points[DES0].position);
             else
                 agent.SetDestination(points[DES1].position);
+        }
+    }
+
+
+    /// <summary>
+    /// 読み込んだ行動記号列を，「場所記号」「行動記号」に分け，
+    /// それぞれ別のstring型行列に格納する
+    /// 
+    /// 具体例
+    /// 
+    /// behavLine = 0,A,12,3,7,B,5,2,10,AC,0,AB,3,H,... の場合，
+    /// behavSymbolList[0] = list{0}, [1] = List{12, 3, 7}, [2] = List{5, 2, 10}, ...
+    /// areaSymbolList[0] = A, [1] = B , ... 
+    /// のように格納される
+    /// </summary>
+    /// <param name="behavLine">読み込んだ行動記号列</param>
+    /// <param name="behavSymbolList">行動記号のリスト(実際にはリストのリスト)</param>
+    /// <param name="areaSymbolList">場所記号のリスト</param>
+    void SplitBehavLine(string behavLine, ref List<List<string>> behavSymbolList, ref List<string> areaSymbolList)
+    {
+        int bSLindex = 0;
+        
+        string[] behavLineSymbolArr = behavLine.Split(',');
+        //Debugger.Array(behavLineSymbolArr);
+
+        // behavSymbolList の bSLindex 番目にアクセスするために，new でメモリを確保する．
+        behavSymbolList.Add(new List<string>());
+
+        foreach (var symbol in behavLineSymbolArr)
+        {
+            //Debug.Log("Is " + symbol + " BehavSymbol ? : " + IsBehavSymbol(symbol));
+            //Debug.Log("Is " + symbol + " AreaSymbol ? : " + IsAreaSymbol(symbol));
+            if (IsBehavSymbol(symbol))
+            {
+                behavSymbolList[bSLindex].Add(symbol);
+            }
+            else if (IsAreaSymbol(symbol))
+            {
+                areaSymbolList.Add(symbol);
+                behavSymbolList.Add(new List<string>());
+                bSLindex++;
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// 文字列が行動記号かどうか(半角数字かどうか)を判別する
+    /// 
+    /// 行動記号列なら true，そうでなければ false を返す
+    /// </summary>
+    /// <param name="target">判別すべき文字列</param>
+    /// <returns></returns>
+    static bool IsBehavSymbol(string target)
+    {
+        return new Regex("^[0-9]+$").IsMatch(target);
+    }
+
+    /// <summary>
+    /// 文字列が場所記号かどうか(大文字の半角アルファベットかどうか)を判別する
+    /// 
+    /// 場所記号列なら true，そうでなければ false を返す
+    /// </summary>
+    /// <param name="target">判別すべき文字列</param>
+    /// <returns></returns>
+    static bool IsAreaSymbol(string target)
+    {
+        return new Regex("^[A-Z]+$").IsMatch(target);
+    }
+
+
+    /// <summary>
+    /// 自身が特定の行動を行い，それが終わって whichBehavior = WALK に切り替わったかを，
+    /// 1秒ごとにチェックする関数．
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator IsBehaviorDone(List<string> behavSymbols)
+    {
+        foreach (var behavSymbol in behavSymbols)
+        {
+            // 行動記号を int に変換
+            int behavSymInt = int.Parse(behavSymbol);
+
+            Debug.Log("bs is " + behavSymInt);
+
+            // Default 記号がある場合，移動間でどの動作も行わない
+            if (behavSymInt == 0) break;
+
+            // ここに，一秒ごとに行動状態を確認するコルーチンを入れる
+            while (true)
+            {
+                // 0～1秒毎に行動確認
+                if (r.whichBehavior == 1) break;
+                yield return new WaitForSeconds(1f);
+            }
+            r.doBehavior = behavSymInt;
+            yield return new WaitForSeconds(2f);
+            Debug.Log("r.doBehavior = " + behavSymInt);
         }
     }
 

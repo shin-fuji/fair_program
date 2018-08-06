@@ -27,6 +27,13 @@ public class ButtonBehavSaveScript : MonoBehaviour
         // 別のオブジェクト(Player)のスクリプトを参照
         //PlayerBehaviorText_Fair2Ver playerBehavText = playerBehavTextObj.GetComponent<PlayerBehaviorText_Fair2Ver>();
         //PlayerBehaviorText_VIVE playerBehavText = playerBehavTextObj.GetComponent<PlayerBehaviorText_VIVE>();
+        
+        // すべての行動を行ったら退場させる
+        // 
+        if (Random.Range(0f, 1f) >= 0.5f)
+            pbt_VIVE.playerBehavList.Add("P");
+        else
+            pbt_VIVE.playerBehavList.Add("Q");
 
         SaveBehav(pbt_VIVE.playerBehavList);
 
@@ -62,8 +69,7 @@ public class ButtonBehavSaveScript : MonoBehaviour
         //    Debug.Log("Loop1");
         //    sw.Write(playerBehavList[i]);
         //}
-
-        Debug.Log("<color=red>BehavList is Saved.</color> : " + playerBehavList);
+        
 
         foreach (string behav in playerBehavList)
         {
