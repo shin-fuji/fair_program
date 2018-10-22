@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MyCommonConst;
 
 /// <summary>
 /// This script manages behaviours of the Robot(ex, which the robot is walking or not).
@@ -32,36 +33,17 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     // テスト用のデフォルト客であるかどうか
     //public bool defaultCustomer;
 
-    // 自身がどの動作をしているかを表す定数
-    // default           : 0
-    // walk              : 1
-    // stop              : 2 
-    // turing            : 3
-    // pick up           : 4
-    // thinking          : 5
-    // look around       : 6
-    // appreciation      : 7
-    // handclap          : 8
-    // applause          : 9
-    const int DEFAULT = 0,
-              WALK = 1,
-              STOP = 2,
-              TURNING = 3,
-              PICKUP = 4,
-              THINKING = 5,
-              LOOKAROUND = 6,
-              APPRECIATION = 7,
-              HANDCLAP = 8,
-              APPLAUSE = 9;
-
-    public int whichBehavior = WALK;
+    public int customerGroup = MyConst.GROUP_SHOPPING;
+    public int whichBehavior = MyConst.WALK;
     public int doBehavior;
 
     // アニメーション関連の変数
     NavMeshofCustomer_Fair2Ver nmc;
     public AnimatorStateInfo animInfo;
     Vector3 from;
-    
+
+    float appreciationTimer = 0;
+
 
     // HerdBehaviorを扱うための変数
     List<GameObject> otherCustomerList = new List<GameObject>();
@@ -72,6 +54,8 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
     // 店員の位置リスト
     List<Vector3> clerkPos = new List<Vector3>();
+
+
 
     // 手拍子などの効果音
     [SerializeField]
@@ -84,7 +68,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     void Start()
     {
         transform = GetComponent<Transform>();
-        player = GameObject.FindGameObjectsWithTag("Player")[0];
+        player = GameObject.FindGameObjectsWithTag("Player")[0].transform.Find("PlayerSphere").gameObject;
         anim = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
 
@@ -96,7 +80,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         }
 
         nmc = GetComponent<NavMeshofCustomer_Fair2Ver>();
-        clerkPos.ShowListContentsInTheDebugLog();
+        //clerkPos.ShowListContentsInTheDebugLog();
 
         //Debug.Log("ApplyHeadBehaviour is " + ApplyHeadBehaviour);
     }
@@ -124,11 +108,13 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             //anim.SetBool("Thinking", false);
             
 
-            whichBehavior = WALK;
+            whichBehavior = MyConst.WALK;
             from = transform.forward;  // 今向いている方向
         }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Turning"))
         {
+            whichBehavior = MyConst.TURNING;
+
             // どの店の前にいるかを取得し，その店の店員の方向へ向く
             if (nmc.mode <= clerkPos.Count - 1) RobotTurning(transform.position + from, clerkPos[nmc.mode]);
 
@@ -137,6 +123,8 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.ToFoward"))
         {
+            whichBehavior = MyConst.TURNING;
+
             // どの店の前にいるかを取得し，その店の店員の方向から元の方向へ向く
             if (nmc.mode <= clerkPos.Count - 1) RobotTurning(clerkPos[nmc.mode], transform.position + from);
 
@@ -145,17 +133,20 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             anim.SetBool("Thinking", false);
             //doBehavior = WALK;
         }
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.PickUp")) { whichBehavior = PICKUP; }
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Thinking")) { whichBehavior = THINKING; }
+        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.PickUp")) { whichBehavior = MyConst.PICKUP; }
+        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Thinking")) { whichBehavior = MyConst.THINKING; }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.LookAround"))
         {
-            whichBehavior = LOOKAROUND;
+            whichBehavior = MyConst.LOOKAROUND;
             anim.SetBool("LookAround", false);
             anim.SetBool("Turning", false);
         }
 
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Appreciation"))
         {
+
+            appreciationTimer += Time.deltaTime;
+            if(appreciationTimer >= 5) anim.SetBool("Appreciation", false);
 
             // 舞台の方向へ向かせる
             RobotTurning(transform.position + from, GameObject.Find("butai").transform.position);
@@ -177,20 +168,20 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             //    whichBehavior = APPRECIATION;
             //}
 
-            whichBehavior = APPRECIATION;
+            whichBehavior = MyConst.APPRECIATION;
 
 
         }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Handclap"))
         {
             if (!audioSource.isPlaying) audioSource.PlayOneShot(handclapSound);
-            whichBehavior = HANDCLAP;
+            whichBehavior = MyConst.HANDCLAP;
             anim.SetBool("Handclap", false);
         }
         if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Applause"))
         {
             if (!audioSource.isPlaying) audioSource.PlayOneShot(applauseSound);
-            whichBehavior = APPLAUSE;
+            whichBehavior = MyConst.APPLAUSE;
             anim.SetBool("Applause", false);
             //anim.SetBool("Appreciation", true);
         }
@@ -198,7 +189,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
 
         // 歩いているときだけ視線移動をするように
-        if (whichBehavior == WALK)
+        if (whichBehavior == MyConst.WALK)
         {
             if (GetComponent<HeadLookController>() != null)
                 GetComponent<HeadLookController>().enabled = true;
@@ -218,7 +209,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     {
         switch (doBehavior)
         {
-            case PICKUP:
+            case MyConst.PICKUP:
                 if (anim.GetBool("Turning") == false)
                 {
                     anim.SetBool("Turning", true);
@@ -229,7 +220,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
                     anim.SetBool("PickUp", true);
                 }
                 break;
-            case THINKING:
+            case MyConst.THINKING:
                 if (anim.GetBool("Turning") == false)
                 {
                     anim.SetBool("Turning", true);
@@ -240,17 +231,17 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
                     anim.SetBool("Thinking", true);
                 }
                 break;
-            case LOOKAROUND:
+            case MyConst.LOOKAROUND:
                 anim.SetBool("LookAround", true);
                 break;
-            case APPRECIATION:
+            case MyConst.APPRECIATION:
                 anim.SetBool("Appreciation", true);
                 break;
-            case HANDCLAP:
+            case MyConst.HANDCLAP:
                 anim.SetBool("Appreciation", true); // 一旦，Appreciation状態へ移行する
                 anim.SetBool("Handclap", true);
                 break;
-            case APPLAUSE:
+            case MyConst.APPLAUSE:
                 anim.SetBool("Appreciation", true); // 一旦，Appreciation状態へ移行する
                 anim.SetBool("Applause", true);
                 break;
@@ -259,7 +250,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         }
 
         // 行動を変化させたあと，一旦 doBehavior を DEFAULT に戻す
-        doBehavior = DEFAULT;
+        doBehavior = MyConst.DEFAULT;
     }
 
 
@@ -275,7 +266,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         if (timer < TimeInterval) return;
         else
         {
-            if (ApplyHeadBehaviour == true && whichBehavior == WALK)
+            if (ApplyHeadBehaviour == true && whichBehavior == MyConst.WALK)
             {
 
                 // WalkEnd は無視
@@ -288,6 +279,8 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
                 if (VectorDistance(transform.position, player.transform.position) < 3)
                 {
                     //Debug.Log(transform.name + " is near the player!");
+                    Debug.Log("testtesttest!!!   " + player.GetComponent<PlayerBehaviorText_VIVE>().whichBehavior);
+
                     HerdBehavior((int)player.GetComponent<PlayerBehaviorText_VIVE>().whichBehavior);
 
                     return;
@@ -317,7 +310,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
                     // 舞台袖で，手拍子か拍手をしているキャラがいれば，それを伝播させる
                     if ((collider.gameObject.tag == "Sec_F_STA" || collider.gameObject.tag == "Sec_S_STA") &&
-                        (tmp0 == HANDCLAP || tmp0 == APPLAUSE))
+                        (tmp0 == MyConst.HANDCLAP || tmp0 == MyConst.APPLAUSE))
                     {
                         HerdBehavior(tmp0);
                         return;
@@ -349,9 +342,9 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         // というように，行動が変化するようにする
         // (「買い物」概念の伝播)
         float randNumHb = Random.Range(0f, 1f);
-        if (hb == PICKUP)
+        if (hb == MyConst.PICKUP)
             hb = Mathf.RoundToInt(hb + randNumHb);
-        else if (hb == THINKING)
+        else if (hb == MyConst.THINKING)
             hb = Mathf.RoundToInt(hb - randNumHb);
 
         doBehavior = hb;

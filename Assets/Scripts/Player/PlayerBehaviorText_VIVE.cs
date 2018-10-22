@@ -65,6 +65,8 @@ public class PlayerBehaviorText_VIVE : MonoBehaviour
     /// O : 舞台横(STA_S)
     /// P : 右側出口(RI_EXIT)
     /// Q : 下側出口(LO_EXIT)
+    /// 
+    /// プレイヤーの場合，場所記号をアルファベットでファイルに書き込むため，定数もそのようになっている．
     /// </summary>
     const string
         WAT = "A", TA = "B", SHA = "C", YA = "D", KAI = "E",

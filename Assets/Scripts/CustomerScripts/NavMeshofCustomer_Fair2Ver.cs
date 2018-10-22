@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using System.Text.RegularExpressions;
-
-using MyCommonConst;
+using MyCommonConst;    // 自作ネームスペースは，同じディレクトリに入れないとusingが使えない
 
 /// <summary>
 /// フィールド上(NavMesh)での客の動作を制御するためのスクリプト
@@ -176,6 +175,9 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                     case MyConst.FAN_2:
                         SetDestination(timer, MyConst.FAN_1, MyConst.STA_F);
                         break;
+                    case MyConst.COR:
+                        SetDestination(timer, MyConst.YO, MyConst.KI);
+                        break;
                     case MyConst.STA_F:
                         SetDestination(timer, MyConst.STA_S, MyConst.FAN_1);
                         break;
@@ -192,13 +194,13 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 // areaSymbols0の順番に各エリアを周回する
                 pointsIndexRem = pointsIndex % pointsCount;
                 agent.SetDestination(points[pointsIndexRem].position);
-                Debug.Log("次の目的地：" + areaSymbolList[pointsIndexRem]);
+                //Debug.Log("次の目的地：" + areaSymbolList[pointsIndexRem]);
 
                 pointsIndex = (pointsIndex + 1) % pointsCount;
                 
                 behavSymbols = behavSymbolList[pointsIndexRem];
-                Debug.Log("次の行動記号列：");
-                behavSymbols.ShowListContentsInTheDebugLog();
+                //Debug.Log("次の行動記号列：");
+                //behavSymbols.ShowListContentsInTheDebugLog();
 
                 // doSpecificBehavior初期化
                 // 特定の行動記号がなければ下の if 節で即座に false になる
@@ -211,62 +213,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
         if (readFileOrNot == true && doSpecificBehavior == true)
         {
 
-            //// Stop 記号がある場合
-            ////if (behav.Contains("2"))
-            ////{
-            ////    r.doBehavior = 2;
-            ////    doSpecificBehavior = false;
-            ////}
-            //// PickUp 記号がある場合
-            //if (behav.Contains("4"))
-            //{
-            //    r.doBehavior = 4;
-            //    doSpecificBehavior = false;
-            //}
-            //// Thinking 記号がある場合
-            //if (behav.Contains("5"))
-            //{
-            //    r.doBehavior = 5;
-            //    doSpecificBehavior = false;
-            //}
-            //// lookaround 記号がある場合
-            //if (behav.Contains("6"))
-            //{
-            //    r.doBehavior = 6;
-            //    doSpecificBehavior = false;
-            //}
-            //// appreciation 記号がある場合
-            //if (behav.Contains("7"))
-            //{
-            //    r.doBehavior = 7;
-
-            //    // appreciation + handclap 記号がある場合
-            //    if (behav.Contains("8"))
-            //    {
-            //        r.doBehavior = 8;
-            //    }
-            //    // appreciation + applause 記号がある場合
-            //    if (behav.Contains("9"))
-            //    {
-            //        r.doBehavior = 9;
-            //    }
-
-            //    doSpecificBehavior = false;
-            //}
-            //else
-            //{
-            //    // 特定の行動記号がなければ、
-            //    // 次のエリアへ移動するまでこの if 節は実行しない
-            //    doSpecificBehavior = false;
-            //}
-            
-
-            // この状態だと，エージェントが行動を映す前に一瞬でループが回ってしまい，
-            // リスト内の行動をすべて行うことができない
-            // r.doBehaviorに代入した後，その行動が終わるまで次の値を代入しないようにしたい
-            // 行動が終わるまで，ループを遅延する
-            // →行動が終わったかをどう判断するか，ループをどう遅延させるか
-            // →コルーチン内でifを用いることにより1秒ごとに確かめ，動作が終了していると分かればforeachを回す
+            // 行動記号列内の行動を行う
             StartCoroutine(IsBehaviorDone(behavSymbols));
 
             // 特定の行動記号がなければ、
@@ -537,8 +484,6 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
         foreach (var symbol in behavLineSymbolArr)
         {
-            //Debug.Log("Is " + symbol + " BehavSymbol ? : " + IsBehavSymbol(symbol));
-            //Debug.Log("Is " + symbol + " AreaSymbol ? : " + IsAreaSymbol(symbol));
             if (IsBehavSymbol(symbol))
             {
                 behavSymbolList[bSLindex].Add(symbol);
@@ -579,8 +524,7 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
 
 
     /// <summary>
-    /// 自身が特定の行動を行い，それが終わって whichBehavior = WALK に切り替わったかを，
-    /// 1秒ごとにチェックする関数．
+    /// 行動記号列を読み，順番に行動を行わせる関数
     /// </summary>
     /// <returns></returns>
     IEnumerator IsBehaviorDone(List<string> behavSymbols)
@@ -590,12 +534,13 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
             // 行動記号を int に変換
             int behavSymInt = int.Parse(behavSymbol);
 
-            Debug.Log("bs is " + behavSymInt);
+            //Debug.Log("bs is " + behavSymInt);
 
             // Default 記号がある場合，移動間でどの動作も行わない
             if (behavSymInt == 0) break;
 
             // ここに，一秒ごとに行動状態を確認するコルーチンを入れる
+            // WALK に戻っていれば次の行動へ
             while (true)
             {
                 // 0～1秒毎に行動確認
@@ -603,8 +548,8 @@ public class NavMeshofCustomer_Fair2Ver : MonoBehaviour
                 yield return new WaitForSeconds(1f);
             }
             r.doBehavior = behavSymInt;
-            yield return new WaitForSeconds(2f);
-            Debug.Log("r.doBehavior = " + behavSymInt);
+            yield return new WaitForSeconds(1f);
+            //Debug.Log("r.doBehavior = " + behavSymInt);
         }
     }
 

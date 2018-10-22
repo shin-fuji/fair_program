@@ -8,9 +8,12 @@ using System.Collections.Generic;
 // ファイル読み込み
 public class BehaviourScriptReader : MonoBehaviour
 {
-    private string behavLine = "";
+    string behavLine = "";
     public List<string> behavLineList = new List<string>();
     char[] SPLIT = { '\n' };
+
+    [SerializeField]
+    private string filename = "behavior_array_VIVE.txt";
 
     // 行動記号列を読み込むか
     public static bool readFileOrNot = true;
@@ -38,7 +41,7 @@ public class BehaviourScriptReader : MonoBehaviour
 
         // FileReadTest.txtファイルを読み込む
         //FileInfo fi = new FileInfo(Application.dataPath + "/HerdBehav_test.txt");
-        FileInfo fi = new FileInfo(Application.dataPath + "/behavior_array_VIVE.txt");
+        FileInfo fi = new FileInfo(Application.dataPath + "/" + filename);
         try
         {
             // 一行毎読み込み

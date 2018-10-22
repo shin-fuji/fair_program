@@ -6,6 +6,19 @@ namespace MyCommonConst {
 
     public static class MyConst
     {
+
+        /// <summary>
+        /// 客がどのグループに属しているかを示す定数
+        /// 0 : 買い物グループ(GROUP_SHOPPING)
+        /// 1 : 舞台鑑賞グループ(GROUP_BUTAI)
+        /// 2 : 通行人グループ(GROUP_PASSERBY)
+        /// </summary>
+        public const int
+            GROUP_SHOPPING = 0,
+            GROUP_BUTAI = 1,
+            GROUP_PASSERBY = 2;
+
+
         /// <summary>
         /// 客が現在どこにいるかなどを示す定数
         /// 0 : わたあめ屋(WAT)
@@ -32,6 +45,32 @@ namespace MyCommonConst {
             FAN_1 = 10, FAN_2 = 11,
             COR = 12, STA_F = 13, STA_S = 14,
             RI_EXIT = 15, LO_EXIT = 16;
+
+
+        /// <summary>
+        /// 自身がどの動作をしているかを表す定数
+        /// 0 : default
+        /// 1 : walk
+        /// 2 : stop
+        /// 3 : turing
+        /// 4 : pick up
+        /// 5 : thinking
+        /// 6 : look around
+        /// 7 : appreciation
+        /// 8 : handclap
+        /// 9 : applause
+        /// </summary>
+        public const int 
+            DEFAULT = 0,
+            WALK = 1,
+            STOP = 2,
+            TURNING = 3,
+            PICKUP = 4,
+            THINKING = 5,
+            LOOKAROUND = 6,
+            APPRECIATION = 7,
+            HANDCLAP = 8,
+            APPLAUSE = 9;
     }
 
 
