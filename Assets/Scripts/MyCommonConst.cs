@@ -59,8 +59,9 @@ namespace MyCommonConst {
         /// 7 : appreciation
         /// 8 : handclap
         /// 9 : applause
+        /// 10: conversation
         /// </summary>
-        public const int 
+        public const int
             DEFAULT = 0,
             WALK = 1,
             STOP = 2,
@@ -70,7 +71,8 @@ namespace MyCommonConst {
             LOOKAROUND = 6,
             APPRECIATION = 7,
             HANDCLAP = 8,
-            APPLAUSE = 9;
+            APPLAUSE = 9,
+            CONVERSATION = 10;
     }
 
 

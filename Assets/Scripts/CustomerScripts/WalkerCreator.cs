@@ -117,11 +117,11 @@ public class WalkerCreator : MonoBehaviour {
     private void ReplaceMaterial(GameObject walker, int customerGroup, Material liamMat, Material liamMat_butai, Material liamMat_passerby)
     {
         if (customerGroup == MyConst.GROUP_SHOPPING)
-            walker.transform.GetChild(1).GetComponent<Renderer>().material = liamMat;
+            walker.transform.GetChild(0).GetChild(1).GetChild(1).GetComponent<Renderer>().material = liamMat;
         else if (customerGroup == MyConst.GROUP_BUTAI)
-            walker.transform.GetChild(1).GetComponent<Renderer>().material = liamMat_butai;
+            walker.transform.GetChild(0).GetChild(1).GetChild(1).GetComponent<Renderer>().material = liamMat_butai;
         else if (customerGroup == MyConst.GROUP_PASSERBY)
-            walker.transform.GetChild(1).GetComponent<Renderer>().material = liamMat_passerby;
+            walker.transform.GetChild(0).GetChild(1).GetChild(1).GetComponent<Renderer>().material = liamMat_passerby;
     }
 
 }

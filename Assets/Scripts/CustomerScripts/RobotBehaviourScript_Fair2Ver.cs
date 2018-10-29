@@ -41,6 +41,9 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     NavMeshofCustomer_Fair2Ver nmc;
     public AnimatorStateInfo animInfo;
     Vector3 from;
+    int _stateWalk, _stateTurning, _statePickUp, _stateThinking, _stateLookAround, _stateToFoward,
+        _stateAppreciation, _stateHandclap, _stateApplause;
+
 
     float appreciationTimer = 0;
 
@@ -55,8 +58,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
     // 店員の位置リスト
     List<Vector3> clerkPos = new List<Vector3>();
 
-
-
+    
     // 手拍子などの効果音
     [SerializeField]
     AudioClip handclapSound, applauseSound;
@@ -71,6 +73,18 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
         player = GameObject.FindGameObjectsWithTag("Player")[0].transform.Find("PlayerSphere").gameObject;
         anim = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+
+
+        _stateWalk = Animator.StringToHash("Base Layer.Walk");
+        _stateTurning = Animator.StringToHash("Base Layer.Turning");
+        _statePickUp = Animator.StringToHash("Base Layer.PickUp");
+        _stateThinking = Animator.StringToHash("Base Layer.Thinking");
+        _stateLookAround = Animator.StringToHash("Base Layer.LookAround");
+        _stateToFoward = Animator.StringToHash("Base Layer.ToFoward");
+        _stateAppreciation = Animator.StringToHash("Base Layer.Appreciation");
+        _stateHandclap = Animator.StringToHash("Base Layer.Handclap");
+        _stateApplause = Animator.StringToHash("Base Layer.Applause");
+
 
         // 店員の位置を取得
         var clerks = GameObject.FindGameObjectsWithTag("Clerk").OrderBy(x => x.name);
@@ -101,7 +115,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
         
 
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Walk"))
+        if (animInfo.fullPathHash == _stateWalk)
         {
             // アニメーション遷移のタイミングの関係でPickUp, Thinkingの初期化はここで行う
             //anim.SetBool("PickUp", false);
@@ -111,7 +125,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             whichBehavior = MyConst.WALK;
             from = transform.forward;  // 今向いている方向
         }
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Turning"))
+        if (animInfo.fullPathHash == _stateTurning)
         {
             whichBehavior = MyConst.TURNING;
 
@@ -121,7 +135,7 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             // Turningから遷移しない問題，とりあえず，臨時でThinkingをtrueにしている
             if (anim.GetBool("PickUp") == false && anim.GetBool("Thinking") == false) anim.SetBool("Thinking", true);
         }
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.ToFoward"))
+        if (animInfo.fullPathHash == _stateToFoward)
         {
             whichBehavior = MyConst.TURNING;
 
@@ -133,16 +147,16 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
             anim.SetBool("Thinking", false);
             //doBehavior = WALK;
         }
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.PickUp")) { whichBehavior = MyConst.PICKUP; }
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Thinking")) { whichBehavior = MyConst.THINKING; }
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.LookAround"))
+        if (animInfo.fullPathHash == _statePickUp) { whichBehavior = MyConst.PICKUP; }
+        if (animInfo.fullPathHash == _stateThinking) { whichBehavior = MyConst.THINKING; }
+        if (animInfo.fullPathHash == _stateLookAround)
         {
             whichBehavior = MyConst.LOOKAROUND;
             anim.SetBool("LookAround", false);
             anim.SetBool("Turning", false);
         }
 
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Appreciation"))
+        if (animInfo.fullPathHash == _stateAppreciation)
         {
 
             appreciationTimer += Time.deltaTime;
@@ -172,13 +186,13 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
 
 
         }
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Handclap"))
+        if (animInfo.fullPathHash == _stateHandclap)
         {
             if (!audioSource.isPlaying) audioSource.PlayOneShot(handclapSound);
             whichBehavior = MyConst.HANDCLAP;
             anim.SetBool("Handclap", false);
         }
-        if (animInfo.fullPathHash == Animator.StringToHash("Base Layer.Applause"))
+        if (animInfo.fullPathHash == _stateApplause)
         {
             if (!audioSource.isPlaying) audioSource.PlayOneShot(applauseSound);
             whichBehavior = MyConst.APPLAUSE;
@@ -279,7 +293,6 @@ public class RobotBehaviourScript_Fair2Ver : MonoBehaviour
                 if (VectorDistance(transform.position, player.transform.position) < 3)
                 {
                     //Debug.Log(transform.name + " is near the player!");
-                    Debug.Log("testtesttest!!!   " + player.GetComponent<PlayerBehaviorText_VIVE>().whichBehavior);
 
                     HerdBehavior((int)player.GetComponent<PlayerBehaviorText_VIVE>().whichBehavior);
 
